@@ -4,12 +4,14 @@ package com.menohack.glebforge
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
 	import flash.geom.Point;
 	import flash.utils.getTimer;
 	import flash.geom.Vector3D;
 	import flash.ui.Mouse;
+	import flash.ui.Keyboard;
 	
 	/**
 	 * ...
@@ -47,7 +49,11 @@ package com.menohack.glebforge
 		
 		private static var SPEED:Number = 300.0;
 		
-		private var grid:BitmapData;
+		private var gridBitmapData:BitmapData;
+		
+		private var grid:Bitmap;
+		
+		private var camera:Camera;
 		
 		public function Main():void 
 		{
@@ -61,10 +67,12 @@ package com.menohack.glebforge
 			
 			stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
 			stage.addEventListener(MouseEvent.CLICK, onMouseClick);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			stage.frameRate = 120;
 			//Mouse.hide();
 			
-			grid = new BitmapData(stage.stageWidth, stage.stageHeight);
+			gridBitmapData = new BitmapData(stage.stageWidth, stage.stageHeight);
 			
 			var tiles:Array = new Array(new greyTile(), new blueTile(), new mustardTile());
 			
@@ -74,16 +82,18 @@ package com.menohack.glebforge
 				{
 					var random:uint = uint(Math.random() * 3);
 					var tile:Bitmap = tiles[random];
-					grid.copyPixels(tile.bitmapData, new Rectangle(0, 0, tile.width, tile.height), new Point(i * 41, j * 41));
+					gridBitmapData.copyPixels(tile.bitmapData, new Rectangle(0, 0, tile.width, tile.height), new Point(i * 41, j * 41));
 				}
 			}
-			var gridBitmap:Bitmap = new Bitmap(grid);
-			addChild(gridBitmap);
+			
+			grid = new Bitmap(gridBitmapData);
 			
 			selector = new tileSelector();
-			addChild(selector);
+			//addChild(selector);
+			camera = new Camera(stage.stageWidth, stage.stageHeight);
+			addChild(camera.bitmap);
 			
-			addChild(barracks = new barracksImage());
+			barracks = new barracksImage();
 			position.x = stage.stageWidth / 2 - barracks.width/2;
 			position.y = stage.stageHeight / 2 - barracks.height / 2;
 			barracks.x = position.x;
@@ -92,8 +102,6 @@ package com.menohack.glebforge
 			
 			
 			addEventListener(Event.ENTER_FRAME, create);
-			//while (true)
-			//	gameLoop();
 		}
 		
 		private function create(e:Event):void
@@ -106,6 +114,7 @@ package com.menohack.glebforge
 		
 		private function update(e:Event):void
 		{
+			//camera.bitmapData.fillRect(new Rectangle(0, 0, camera.bitmapData.width, camera.bitmapData.height), 0x0000FFFF);
 			var newTime:uint = getTimer();
 			var delta:uint = newTime - time;
 			
@@ -146,14 +155,18 @@ package com.menohack.glebforge
 					barracks.y += direction.y;
 			}
 			
-
+			
+			camera.bitmapData.copyPixels(grid.bitmapData, new Rectangle(0, 0, grid.width, grid.height), new Point(grid.x, grid.y));
+			camera.bitmapData.copyPixels(selector.bitmapData, new Rectangle(0, 0, selector.width, selector.height), new Point(selector.x, selector.y), null, null, true);
+			camera.bitmapData.copyPixels(barracks.bitmapData, new Rectangle(0, 0, barracks.width, barracks.height), new Point(barracks.x, barracks.y), null, null, true);
+			
 			time = newTime;
 		}
 		
 		private function drawTileSelector(x:int, y:int):void
 		{
 			if (x > stage.stageWidth || x < 0 || y > stage.stageHeight || y < 0)
-				selector.visible = false;
+				selector.visible = true;
 			else
 			{
 				selector.x = Math.floor((x) / selector.width) * selector.width;
@@ -162,14 +175,32 @@ package com.menohack.glebforge
 			}
 		}
 		
+		private function onKeyDown(e:KeyboardEvent):void
+		{
+			var key:uint = e.keyCode;
+			if (Keyboard.W == key || Keyboard.UP == key)
+				camera.moveUp();
+			if (Keyboard.S == key || Keyboard.DOWN == key)
+				camera.moveDown();
+			if (Keyboard.A == key || Keyboard.LEFT == key)
+				camera.moveLeft();
+			if (Keyboard.D == key || Keyboard.RIGHT == key)
+				camera.moveRight();
+		}
+		
+		private function onKeyUp(e:KeyboardEvent):void
+		{
+			
+		}
+		
 		private function onMouseClick(e:MouseEvent):void
 		{
-			end = new Vector3D(e.localX, e.localY, 0);
+			end = new Vector3D(e.localX - camera.bitmap.x, e.localY - camera.bitmap.y, 0);
 		}
 		
 		private function onMouseMove(e:MouseEvent):void
 		{
-			drawTileSelector(e.localX, e.localY);
+			drawTileSelector(e.localX - camera.bitmap.x, e.localY - camera.bitmap.y);
 		}
 		
 	}
