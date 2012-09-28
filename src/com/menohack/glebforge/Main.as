@@ -17,7 +17,7 @@ package com.menohack.glebforge
 	 */
 	public class Main extends Sprite 
 	{
-		[Embed(source="../../../../lib/barracks.png")]
+		[Embed(source="../../../../lib/shittybarracks.png")]
 		private var barracksImage:Class;
 		
 		[Embed(source="../../../../lib/blueTile.png")]
