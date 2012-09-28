@@ -1,4 +1,4 @@
-package GlebForge
+package com.menohack.glebforge
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -17,19 +17,19 @@ package GlebForge
 	 */
 	public class Main extends Sprite 
 	{
-		[Embed(source = '../../lib/barracks.png')]
+		[Embed(source="../../../../lib/barracks.png")]
 		private var barracksImage:Class;
 		
-		[Embed(source="../../lib/blueTile.png")]
+		[Embed(source="../../../../lib/blueTile.png")]
 		private var blueTile:Class;
 		
-		[Embed(source = "../../lib/greyTile.png")]
+		[Embed(source = "../../../../lib/greyTile.png")]
 		private var greyTile:Class;
 		
-		[Embed(source = "../../lib/mustardTile.png")]
+		[Embed(source = "../../../../lib/mustardTile.png")]
 		private var mustardTile:Class;
 		
-		[Embed(source = "../../lib/tileSelector.png")]
+		[Embed(source = "../../../../lib/tileSelector.png")]
 		private var tileSelector:Class;
 		
 		private var selector:Bitmap;
