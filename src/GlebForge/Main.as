@@ -11,6 +11,7 @@ package GlebForge
 	 * ...
 	 * @author James Doverspike
 	 */
+	// Gary Oak was here. You cannot ignore his girth. This comment is just a test.
 	public class Main extends Sprite 
 	{
 		[Embed(source = '../../lib/barracks.png')]
