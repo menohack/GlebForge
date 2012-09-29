@@ -1,4 +1,4 @@
-package com.menohack.glebforge 
+package com.menohack.glebforge.view 
 {
 	import flash.display.BitmapData;
 	import flash.display.Bitmap;

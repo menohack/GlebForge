@@ -1,4 +1,4 @@
-package com.menohack.glebforge
+package com.menohack.glebforge.model 
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -12,27 +12,29 @@ package com.menohack.glebforge
 	import flash.geom.Vector3D;
 	import flash.ui.Mouse;
 	import flash.ui.Keyboard;
+	import flash.display.Stage;
+	
+	import com.menohack.glebforge.view.Camera;
 	
 	/**
 	 * ...
 	 * @author James Doverspike
 	 */
-	// Gary Oak was here. You cannot ignore his girth. This comment is just a test.
-	public class Main extends Sprite 
+	public class Game implements Model
 	{
-		[Embed(source="../../../../lib/shittybarracks.png")]
+		[Embed(source="../../../../../lib/shittybarracks.png")]
 		private var barracksImage:Class;
 		
-		[Embed(source="../../../../lib/blueTile.png")]
+		[Embed(source="../../../../../lib/blueTile.png")]
 		private var blueTile:Class;
 		
-		[Embed(source = "../../../../lib/greyTile.png")]
+		[Embed(source = "../../../../../lib/greyTile.png")]
 		private var greyTile:Class;
 		
-		[Embed(source = "../../../../lib/mustardTile.png")]
+		[Embed(source = "../../../../../lib/mustardTile.png")]
 		private var mustardTile:Class;
 		
-		[Embed(source = "../../../../lib/tileSelector.png")]
+		[Embed(source = "../../../../../lib/tileSelector.png")]
 		private var tileSelector:Class;
 		
 		private var selector:Bitmap;
@@ -55,22 +57,11 @@ package com.menohack.glebforge
 		
 		private var camera:Camera;
 		
-		public function Main():void 
-		{
-			if (stage) init();
-			else addEventListener(Event.ADDED_TO_STAGE, init);
-		}
+		private var stage:Stage;
 		
-		private function init(e:Event = null):void 
+		public function Game(s:Stage) 
 		{
-			removeEventListener(Event.ADDED_TO_STAGE, init);
-			
-			stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
-			stage.addEventListener(MouseEvent.CLICK, onMouseClick);
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-			stage.frameRate = 120;
-			//Mouse.hide();
+			stage = s;
 			
 			gridBitmapData = new BitmapData(stage.stageWidth, stage.stageHeight);
 			
@@ -91,7 +82,7 @@ package com.menohack.glebforge
 			selector = new tileSelector();
 			//addChild(selector);
 			camera = new Camera(stage.stageWidth, stage.stageHeight);
-			addChild(camera.bitmap);
+			stage.addChild(camera.bitmap);
 			
 			barracks = new barracksImage();
 			position.x = stage.stageWidth / 2 - barracks.width/2;
@@ -99,20 +90,9 @@ package com.menohack.glebforge
 			barracks.x = position.x;
 			barracks.y = position.y;
 			end = position;
-			
-			
-			addEventListener(Event.ENTER_FRAME, create);
 		}
 		
-		private function create(e:Event):void
-		{
-			removeEventListener(Event.ENTER_FRAME, create);
-			
-			
-			addEventListener(Event.ENTER_FRAME, update);
-		}
-		
-		private function update(e:Event):void
+		public function update(e:Event):void
 		{
 			//camera.bitmapData.fillRect(new Rectangle(0, 0, camera.bitmapData.width, camera.bitmapData.height), 0x0000FFFF);
 			var newTime:uint = getTimer();
@@ -175,7 +155,7 @@ package com.menohack.glebforge
 			}
 		}
 		
-		private function onKeyDown(e:KeyboardEvent):void
+		public function onKeyDown(e:KeyboardEvent):void
 		{
 			var key:uint = e.keyCode;
 			if (Keyboard.W == key || Keyboard.UP == key)
@@ -188,21 +168,21 @@ package com.menohack.glebforge
 				camera.moveRight();
 		}
 		
-		private function onKeyUp(e:KeyboardEvent):void
+		public function onKeyUp(e:KeyboardEvent):void
 		{
 			
 		}
 		
-		private function onMouseClick(e:MouseEvent):void
+		public function onMouseClick(e:MouseEvent):void
 		{
 			end = new Vector3D(e.localX - camera.bitmap.x, e.localY - camera.bitmap.y, 0);
 		}
 		
-		private function onMouseMove(e:MouseEvent):void
+		public function onMouseMove(e:MouseEvent):void
 		{
 			drawTileSelector(e.localX - camera.bitmap.x, e.localY - camera.bitmap.y);
 		}
 		
 	}
-	
+
 }
