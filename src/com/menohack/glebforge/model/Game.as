@@ -1,11 +1,13 @@
 package com.menohack.glebforge.model 
 {
+	import adobe.utils.CustomActions;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
+	import flash.events.TimerEvent;
 	import flash.geom.Rectangle;
 	import flash.geom.Point;
 	import flash.utils.getTimer;
@@ -13,8 +15,10 @@ package com.menohack.glebforge.model
 	import flash.ui.Mouse;
 	import flash.ui.Keyboard;
 	import flash.display.Stage;
+	import flash.utils.Timer;
 	
 	import com.menohack.glebforge.view.Camera;
+
 	
 	/**
 	 * ...
@@ -37,9 +41,15 @@ package com.menohack.glebforge.model
 		[Embed(source = "../../../../../lib/tileSelector.png")]
 		private var tileSelector:Class;
 		
+		[Embed(source = "../../../../../lib/peasant.png")]
+		private var peasantImage:Class;
+		
 		private var selector:Bitmap;
 		
 		private var barracks:Bitmap;
+		
+		private var peasant:Bitmap;
+		private var peasantDirection:Vector3D = new Vector3D;
 		
 		private var time:uint = 0;
 		
@@ -90,6 +100,16 @@ package com.menohack.glebforge.model
 			barracks.x = position.x;
 			barracks.y = position.y;
 			end = position;
+			
+			peasant = new peasantImage();
+			peasant.x = barracks.x + 200;
+			peasant.y = barracks.y;
+			peasantDirection.x = 0;
+			peasantDirection.y = 0;
+			
+			var randomWalkTimer:Timer = new Timer(1000);
+			randomWalkTimer.addEventListener(TimerEvent.TIMER, changeRandWalkDir)
+			randomWalkTimer.start();
 		}
 		
 		public function update(e:Event):void
@@ -135,12 +155,26 @@ package com.menohack.glebforge.model
 					barracks.y += direction.y;
 			}
 			
+			//random walk AI logic, every second the direction changes
+			peasantDirection.normalize();
+			peasantDirection.scaleBy(SPEED/10 * delta / 1000);
+			peasant.x += peasantDirection.x;
+			peasant.y += peasantDirection.y;
+			
 			
 			camera.bitmapData.copyPixels(grid.bitmapData, new Rectangle(0, 0, grid.width, grid.height), new Point(grid.x, grid.y));
 			camera.bitmapData.copyPixels(selector.bitmapData, new Rectangle(0, 0, selector.width, selector.height), new Point(selector.x, selector.y), null, null, true);
+			camera.bitmapData.copyPixels(peasant.bitmapData, new Rectangle(0, 0, peasant.width, peasant.height), new Point(peasant.x, peasant.y), null, null, true);
 			camera.bitmapData.copyPixels(barracks.bitmapData, new Rectangle(0, 0, barracks.width, barracks.height), new Point(barracks.x, barracks.y), null, null, true);
 			
+			
 			time = newTime;
+		}
+		
+		private function changeRandWalkDir(event:TimerEvent):void //changes the random walk direction when timer goes off
+		{
+			peasantDirection.x = Math.sin(Math.random()*360);
+			peasantDirection.y = Math.sin(Math.random()*360);
 		}
 		
 		private function drawTileSelector(x:int, y:int):void
