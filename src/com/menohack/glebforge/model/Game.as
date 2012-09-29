@@ -61,36 +61,18 @@ package com.menohack.glebforge.model
 		
 		private static var SPEED:Number = 300.0;
 		
-		private var gridBitmapData:BitmapData;
-		
-		private var grid:Bitmap;
-		
 		private var camera:Camera;
 		
 		private var stage:Stage;
+		
+		private var map:Map;
 		
 		public function Game(s:Stage) 
 		{
 			stage = s;
 			
-			gridBitmapData = new BitmapData(stage.stageWidth, stage.stageHeight);
-			
-			var tiles:Array = new Array(new greyTile(), new blueTile(), new mustardTile());
-			
-			for (var i:uint = 0; i * 41 < stage.stageWidth; i++)
-			{
-				for (var j:uint = 0; j * 41 < stage.stageHeight; j++)
-				{
-					var random:uint = uint(Math.random() * 3);
-					var tile:Bitmap = tiles[random];
-					gridBitmapData.copyPixels(tile.bitmapData, new Rectangle(0, 0, tile.width, tile.height), new Point(i * 41, j * 41));
-				}
-			}
-			
-			grid = new Bitmap(gridBitmapData);
-			
 			selector = new tileSelector();
-			//addChild(selector);
+			
 			camera = new Camera(stage.stageWidth, stage.stageHeight);
 			stage.addChild(camera.bitmap);
 			
@@ -110,6 +92,8 @@ package com.menohack.glebforge.model
 			var randomWalkTimer:Timer = new Timer(1000);
 			randomWalkTimer.addEventListener(TimerEvent.TIMER, changeRandWalkDir)
 			randomWalkTimer.start();
+			
+			map = new Map(2000,2000,camera);
 		}
 		
 		public function update(e:Event):void
@@ -161,14 +145,21 @@ package com.menohack.glebforge.model
 			peasant.x += peasantDirection.x;
 			peasant.y += peasantDirection.y;
 			
+			time = newTime;
 			
-			camera.bitmapData.copyPixels(grid.bitmapData, new Rectangle(0, 0, grid.width, grid.height), new Point(grid.x, grid.y));
+			//I feel dirty as a game programmer calling draw from update
+			draw();
+		}
+		
+		private function draw():void
+		{
+			map.draw();
+			//camera.bitmapData.copyPixels(grid.bitmapData, new Rectangle(0, 0, grid.width, grid.height), new Point(grid.x, grid.y));
 			camera.bitmapData.copyPixels(selector.bitmapData, new Rectangle(0, 0, selector.width, selector.height), new Point(selector.x, selector.y), null, null, true);
 			camera.bitmapData.copyPixels(peasant.bitmapData, new Rectangle(0, 0, peasant.width, peasant.height), new Point(peasant.x, peasant.y), null, null, true);
 			camera.bitmapData.copyPixels(barracks.bitmapData, new Rectangle(0, 0, barracks.width, barracks.height), new Point(barracks.x, barracks.y), null, null, true);
 			
 			
-			time = newTime;
 		}
 		
 		private function changeRandWalkDir(event:TimerEvent):void //changes the random walk direction when timer goes off
