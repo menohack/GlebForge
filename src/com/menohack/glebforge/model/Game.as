@@ -1,6 +1,6 @@
 package com.menohack.glebforge.model 
 {
-	import adobe.utils.CustomActions;
+	//import adobe.utils.CustomActions;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
@@ -28,15 +28,6 @@ package com.menohack.glebforge.model
 	{
 		[Embed(source="../../../../../lib/shittybarracks.png")]
 		private var barracksImage:Class;
-		
-		[Embed(source="../../../../../lib/blueTile.png")]
-		private var blueTile:Class;
-		
-		[Embed(source = "../../../../../lib/greyTile.png")]
-		private var greyTile:Class;
-		
-		[Embed(source = "../../../../../lib/mustardTile.png")]
-		private var mustardTile:Class;
 		
 		[Embed(source = "../../../../../lib/tileSelector.png")]
 		private var tileSelector:Class;
@@ -67,6 +58,10 @@ package com.menohack.glebforge.model
 		
 		private var map:Map;
 		
+		public var otherPlayer:Point;
+		
+		public var me:Point;
+		
 		public function Game(s:Stage) 
 		{
 			stage = s;
@@ -93,12 +88,20 @@ package com.menohack.glebforge.model
 			randomWalkTimer.addEventListener(TimerEvent.TIMER, changeRandWalkDir)
 			randomWalkTimer.start();
 			
-			map = new Map(2000,2000,camera);
+			map = new Map(2000, 2000, camera);
+			
+			//acm main
+			//var nc:NetworkComponent = new NetworkComponent("128.220.251.35", 11000);
+			//acm http
+			//var nc:NetworkComponent = new NetworkComponent("128.220.70.65", 11000);
+			//localhost
+			otherPlayer = new Point(200, 200);
+			me = new Point(400, 200);
+			var nc:NetworkComponent = new NetworkComponent(otherPlayer, me, "127.0.0.1", 11000);
 		}
 		
 		public function update(e:Event):void
 		{
-			//camera.bitmapData.fillRect(new Rectangle(0, 0, camera.bitmapData.width, camera.bitmapData.height), 0x0000FFFF);
 			var newTime:uint = getTimer();
 			var delta:uint = newTime - time;
 			
@@ -138,6 +141,8 @@ package com.menohack.glebforge.model
 				else
 					barracks.y += direction.y;
 			}
+			me.x = barracks.x;
+			me.y = barracks.y;
 			
 			//random walk AI logic, every second the direction changes
 			peasantDirection.normalize();
@@ -156,7 +161,7 @@ package com.menohack.glebforge.model
 			map.draw();
 			//camera.bitmapData.copyPixels(grid.bitmapData, new Rectangle(0, 0, grid.width, grid.height), new Point(grid.x, grid.y));
 			camera.bitmapData.copyPixels(selector.bitmapData, new Rectangle(0, 0, selector.width, selector.height), new Point(selector.x, selector.y), null, null, true);
-			camera.bitmapData.copyPixels(peasant.bitmapData, new Rectangle(0, 0, peasant.width, peasant.height), new Point(peasant.x, peasant.y), null, null, true);
+			camera.bitmapData.copyPixels(peasant.bitmapData, new Rectangle(0, 0, peasant.width, peasant.height), new Point(otherPlayer.x, otherPlayer.y), null, null, true);
 			camera.bitmapData.copyPixels(barracks.bitmapData, new Rectangle(0, 0, barracks.width, barracks.height), new Point(barracks.x, barracks.y), null, null, true);
 			
 			
