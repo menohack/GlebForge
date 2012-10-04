@@ -90,14 +90,12 @@ package com.menohack.glebforge.model
 			
 			map = new Map(2000, 2000, camera);
 			
-			//acm main
-			//var nc:NetworkComponent = new NetworkComponent("128.220.251.35", 11000);
-			//acm http
-			//var nc:NetworkComponent = new NetworkComponent("128.220.70.65", 11000);
-			//localhost
+			//acm main: 128.220.251.35
+			//acm http: 128.220.70.65
+			//localhost: 127.0.0.1
 			otherPlayer = new Point(200, 200);
 			me = new Point(400, 200);
-			var nc:NetworkComponent = new NetworkComponent(otherPlayer, me, "127.0.0.1", 11000);
+			var nc:NetworkComponent = new NetworkComponent(otherPlayer, me, "128.220.251.35", 11000);
 		}
 		
 		public function update(e:Event):void
