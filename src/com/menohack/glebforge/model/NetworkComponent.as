@@ -93,7 +93,7 @@ package com.menohack.glebforge.model
 		private function authenticate():void {
 			trace("Authenticating...");
 			var buffer:ByteArray = new ByteArray();
-			buffer.endian = Endian.LITTLE_ENDIAN;
+			buffer.endian = Endian.BIG_ENDIAN;
 			buffer.writeInt(AUTHENTICATION_CLIENT_VALUE);
 			writeBytes(buffer,0,4);
 			flush();
