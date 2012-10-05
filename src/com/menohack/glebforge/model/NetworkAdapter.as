@@ -10,9 +10,16 @@ package com.menohack.glebforge.model
 		//The Socket connection to the server
 		private var socket:Socket;
 		
+		private var networkComponents:Array;
+		
 		public function NetworkAdapter() 
 		{
-			
+			networkComponents = new Array();
+		}
+		
+		public function addComponent(component:NetworkComponent):void
+		{
+			networkComponents.push(component);
 		}
 		
 	}

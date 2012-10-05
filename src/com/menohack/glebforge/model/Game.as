@@ -62,6 +62,8 @@ package com.menohack.glebforge.model
 		
 		public var me:Point;
 		
+		private var networkAdapter:NetworkAdapter;
+		
 		public function Game(s:Stage) 
 		{
 			stage = s;
@@ -95,7 +97,7 @@ package com.menohack.glebforge.model
 			//localhost: 127.0.0.1
 			otherPlayer = new Point(200, 200);
 			me = new Point(400, 200);
-			var nc:NetworkComponent = new NetworkComponent(otherPlayer, me, "128.220.251.35", 11000);
+			var nc:NetworkComponent = new NetworkComponent(otherPlayer, me, "127.0.0.1", 11000);
 		}
 		
 		public function update(e:Event):void
