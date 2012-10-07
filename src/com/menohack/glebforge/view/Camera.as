@@ -16,10 +16,11 @@ package com.menohack.glebforge.view
 		
 		private var shape:Rectangle;
 		
+		private var mapShape:Rectangle;
 		
 		private static const CAMERA_SPEED:Number = 20.0;
 		
-		public function Camera(width:uint, height:uint) 
+		public function Camera(width:uint, height:uint)
 		{
 			bitmapData = new BitmapData(width, height);
 			bitmap = new Bitmap(bitmapData);
