@@ -104,6 +104,9 @@ package com.menohack.glebforge.model
 			otherPlayer = new Point(200, 200);
 			me = new Point(400, 200);
 			networkAdapter.addComponent(new NetworkComponent(otherPlayer, me, "128.220.251.35", 11000));
+			
+			var player:Player = new Player();
+			player.play();
 		}
 		
 		public function update(e:Event):void

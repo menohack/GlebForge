@@ -17,7 +17,7 @@ package com.menohack.glebforge.model
 		//embed weapon images
 		[Embed(source = "../../../../../lib/ironaxe.png")]
 		private var axeImage:Class;
-		var axeSprite:Bitmap = new axeImage();
+		private var axeSprite:Bitmap = new axeImage();
 		
 		
 		//public for now
