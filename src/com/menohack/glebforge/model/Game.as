@@ -89,6 +89,12 @@ package com.menohack.glebforge.model
 			peasantDirection.x = 0;
 			peasantDirection.y = 0;
 			
+			var axe:Weapon = new Weapon('axe');
+			axe.x = barracks.x + 100;
+			axe.y = barracks.y + 100;
+			
+			stage.addChild(axe);
+			
 			var randomWalkTimer:Timer = new Timer(1000);
 			randomWalkTimer.addEventListener(TimerEvent.TIMER, changeRandWalkDir)
 			randomWalkTimer.start();
@@ -191,6 +197,12 @@ package com.menohack.glebforge.model
 				camera.moveLeft();
 			if (Keyboard.D == key || Keyboard.RIGHT == key)
 				camera.moveRight();
+				
+			//temporary axe spawn and drop controls
+			if (Keyboard.G == key)
+				trace("SPAWN AXE");
+			if (Keyboard.H == key)
+				trace("DROP AXE");
 		}
 		
 		public function onKeyUp(e:KeyboardEvent):void
@@ -200,13 +212,14 @@ package com.menohack.glebforge.model
 		
 		public function onMouseClick(e:MouseEvent):void
 		{
-			end = new Vector3D(e.localX - camera.bitmap.x, e.localY - camera.bitmap.y, 0);
+			end = new Vector3D(e.stageX - camera.bitmap.x, e.stageY - camera.bitmap.y, 0);
 		}
 		
 		public function onMouseMove(e:MouseEvent):void
 		{
-			drawTileSelector(e.localX - camera.bitmap.x, e.localY - camera.bitmap.y);
+			drawTileSelector(e.stageX - camera.bitmap.x, e.stageY - camera.bitmap.y);
 		}
+		
 		
 	}
 

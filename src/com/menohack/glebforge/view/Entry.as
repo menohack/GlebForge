@@ -20,7 +20,6 @@ package com.menohack.glebforge.view
 	 * ...
 	 * @author James Doverspike
 	 */
-	// Gary Oak was here. You cannot ignore his girth. This comment is just a test.
 	public class Entry extends Sprite 
 	{
 		private var game:Model;
