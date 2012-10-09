@@ -11,7 +11,7 @@ package com.menohack.glebforge.model
 
 	public class NetworkComponent extends flash.net.Socket {
 		
-		private static var AUTHENTICATION_CLIENT_VALUE:int = 390458;
+		private static var AUTHENTICATION_CLIENT_VALUE:int = 1;//390458;
 		private static var AUTHENTICATION_SERVER_VALUE:int = -283947;
 		
 		private var authenticated:Boolean = false;
