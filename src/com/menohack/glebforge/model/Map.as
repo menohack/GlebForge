@@ -18,50 +18,77 @@ package com.menohack.glebforge.model
 		
 		private var render:RenderComponent;
 		
-		private var camera:Camera;
+		private var tiles:Vector.<BitmapData>;
+		
+		private var blocks:Vector.<Block>;
 		
 		public static var TILE_WIDTH:uint = 31;
 		public static var TILE_HEIGHT:uint = 31;
 		
-		public function Map(width:uint, height:uint, camera:Camera) 
+		public static var BLOCK_DIM:uint = 32;
+		
+		public function Map(camera:Camera) 
 		{
-			this.camera = camera;
+			blocks = new Vector.<Block>();
 			render = new RenderComponent();
 			render.Camera = camera;
-			render.Bitmap = makeTiles(width, height);
+			render.Bitmap = makeBlock(0, 0);
 		}
 		
-		private function makeTiles(width:uint, height:uint):Bitmap
+		public function addBlock(x:int, y:int):Boolean
+		{
+			var block:Bitmap = makeBlock(x, y);
+			if (block != null)
+			{
+				render.Bitmap = block;
+				return true;
+			}
+			else
+				return false;
+		}
+		
+		private function loadTiles():void
 		{
 			var bitmap:Bitmap = new grassTiles() as Bitmap;
 			
-			var tiles:Array = new Array();
+			var numTiles:uint = bitmap.width / TILE_WIDTH;
+			
+			tiles = new Vector.<BitmapData>();
 			for (var i:int = 0; i*TILE_WIDTH < bitmap.width; i++)
 			{
 				var temp:BitmapData = new BitmapData(TILE_WIDTH, TILE_WIDTH);
 				temp.copyPixels(bitmap.bitmapData, new Rectangle(i * TILE_WIDTH, 0, TILE_WIDTH, TILE_WIDTH), new Point(0, 0));
 				tiles.push(temp);
 			}
-			
-			var horizontalTiles:uint = Math.ceil(width / TILE_WIDTH);
-			var verticalTiles:uint = Math.ceil(height / TILE_HEIGHT);
-			
-			var mapWidth:uint =  horizontalTiles * TILE_WIDTH;
-			var mapHeight:uint = verticalTiles * TILE_HEIGHT;
-			
-			var map:BitmapData = new BitmapData(mapWidth, mapHeight);
-			
-			for (i = 0; i < horizontalTiles; i++)
-				for (var j:int = 0; j < verticalTiles; j++)
-					map.copyPixels(tiles[uint(Math.random() * tiles.length)] as BitmapData, new Rectangle(0, 0, TILE_WIDTH, TILE_HEIGHT), new Point(i * TILE_WIDTH, j * TILE_HEIGHT));
-			
-			return new Bitmap(map);
 		}
 		
-		public function draw():void
+		private function makeBlock(x:int, y:int):Block
 		{
-			render.draw();
+			for (var b:uint = 0; b < blocks.length; b++)
+				if (blocks[b].isSamePosition(x, y))
+					return null;
+			
+			if (tiles == null)
+				loadTiles();
+			
+			//var horizontalTiles:uint = Math.ceil(width / TILE_WIDTH);
+			//var verticalTiles:uint = Math.ceil(height / TILE_HEIGHT);
+			
+			var mapWidth:uint =  BLOCK_DIM * TILE_WIDTH;
+			var mapHeight:uint = BLOCK_DIM * TILE_HEIGHT;
+			
+			var bitmap:BitmapData = new BitmapData(mapWidth, mapHeight);
+			
+			for (var i:int = 0; i < BLOCK_DIM; i++)
+				for (var j:int = 0; j < BLOCK_DIM; j++)
+					bitmap.copyPixels(tiles[uint(Math.random() * tiles.length)] as BitmapData, new Rectangle(0, 0, TILE_WIDTH, TILE_HEIGHT), new Point(i * TILE_WIDTH, j * TILE_HEIGHT));
+			
+			var block:Block = new Block(bitmap, x, y);
+			blocks.push(block);
+			
+			return block;
 		}
+		
 		
 	}
 

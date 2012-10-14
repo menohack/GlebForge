@@ -2,6 +2,7 @@ package com.menohack.glebforge.view
 {
 	import com.menohack.glebforge.model.Game;
 	import com.menohack.glebforge.model.Model;
+	import com.menohack.glebforge.model.Test;
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -20,14 +21,30 @@ package com.menohack.glebforge.view
 	 * ...
 	 * @author James Doverspike
 	 */
+	[SWF(width="640", height="480")]
 	public class Entry extends Sprite 
 	{
 		private var game:Model;
 		
 		public function Entry():void 
 		{
-			if (stage) init();
-			else addEventListener(Event.ADDED_TO_STAGE, init);
+			var testing:Boolean = false;
+			
+			if (testing)
+			{
+				if (stage) test();
+				else addEventListener(Event.ADDED_TO_STAGE, test);
+			}
+			else
+			{
+				if (stage) init();
+				else addEventListener(Event.ADDED_TO_STAGE, init);
+			}
+		}
+		
+		private function test(e:Event = null):void
+		{
+			var test:Test = new Test(stage);
 		}
 		
 		private function init(e:Event = null):void 

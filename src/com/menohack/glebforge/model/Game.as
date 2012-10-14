@@ -1,17 +1,17 @@
 package com.menohack.glebforge.model 
 {
-	//import adobe.utils.CustomActions;
+	import com.menohack.glebforge.view.RenderComponent;
+	import com.menohack.glebforge.view.UI;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
-	import flash.events.TimerEvent;
 	import flash.geom.Rectangle;
 	import flash.geom.Point;
-	import flash.utils.getTimer;
 	import flash.geom.Vector3D;
+	import flash.utils.getTimer;
 	import flash.ui.Mouse;
 	import flash.ui.Keyboard;
 	import flash.display.Stage;
@@ -32,15 +32,12 @@ package com.menohack.glebforge.model
 		[Embed(source = "../../../../../lib/tileSelector.png")]
 		private var tileSelector:Class;
 		
-		[Embed(source = "../../../../../lib/peasant.png")]
-		private var peasantImage:Class;
+		[Embed(source = "../../../../../lib/cursor.png")]
+		private var cursorImage:Class;
 		
 		private var selector:Bitmap;
 		
 		private var barracks:Bitmap;
-		
-		private var peasant:Bitmap;
-		private var peasantDirection:Vector3D = new Vector3D;
 		
 		private var time:uint = 0;
 		
@@ -50,7 +47,7 @@ package com.menohack.glebforge.model
 		
 		private var position:Vector3D = new Vector3D;
 		
-		private static var SPEED:Number = 300.0;
+		public static var SPEED:Number = 300.0;
 		
 		private var camera:Camera;
 		
@@ -64,6 +61,10 @@ package com.menohack.glebforge.model
 		
 		public static var networkAdapter:NetworkAdapter = new NetworkAdapter();
 		
+		public var player1:Player;
+		
+		private var cursor:Sprite;
+		
 		public function Game(s:Stage) 
 		{
 			stage = s;
@@ -71,7 +72,12 @@ package com.menohack.glebforge.model
 			selector = new tileSelector();
 			
 			camera = new Camera(stage.stageWidth, stage.stageHeight);
-			stage.addChild(camera.bitmap);
+			stage.addChild(camera);
+			
+			map = new Map(camera);
+			for (var bx:int = -5; bx < 5; bx++)
+				for (var by:int = -5; by < 5; by++)
+					map.addBlock(bx, by);
 			
 			barracks = new barracksImage();
 			position.x = stage.stageWidth / 2 - barracks.width/2;
@@ -80,23 +86,22 @@ package com.menohack.glebforge.model
 			barracks.y = position.y;
 			end = position;
 			
+			player1 = new Player(barracks.x + 200, barracks.y, camera);
+			/*
 			peasant = new peasantImage();
 			peasant.x = barracks.x + 200;
 			peasant.y = barracks.y;
 			peasantDirection.x = 0;
 			peasantDirection.y = 0;
+			*/
 			
+			/*
 			var axe:Weapon = new Weapon('axe');
 			axe.x = barracks.x + 100;
 			axe.y = barracks.y + 100;
 			
 			stage.addChild(axe);
-			
-			var randomWalkTimer:Timer = new Timer(1000);
-			randomWalkTimer.addEventListener(TimerEvent.TIMER, changeRandWalkDir)
-			randomWalkTimer.start();
-			
-			map = new Map(2000, 2000, camera);
+			*/
 			
 			//acm main: 128.220.251.35
 			//acm http: 128.220.70.65
@@ -105,8 +110,17 @@ package com.menohack.glebforge.model
 			me = new Point(400, 200);
 			networkAdapter.addComponent(new NetworkComponent(otherPlayer, me, "128.220.251.35", 11000));
 			
-			var player:Player = new Player();
-			player.play();
+			new Music();
+			
+			
+			new UI(stage);
+			
+			cursor = new Sprite(); 
+			cursor.addChild(new cursorImage());
+			stage.addChild(cursor); 
+			 
+			stage.addEventListener(MouseEvent.MOUSE_MOVE, redrawCursor); 
+			Mouse.hide();
 		}
 		
 		public function update(e:Event):void
@@ -153,33 +167,24 @@ package com.menohack.glebforge.model
 			me.x = barracks.x;
 			me.y = barracks.y;
 			
-			//random walk AI logic, every second the direction changes
-			peasantDirection.normalize();
-			peasantDirection.scaleBy(SPEED/10 * delta / 1000);
-			peasant.x += peasantDirection.x;
-			peasant.y += peasantDirection.y;
+			player1.update(delta);
 			
 			time = newTime;
 			
 			//I feel dirty as a game programmer calling draw from update
-			draw();
+			//draw();
 		}
 		
 		private function draw():void
 		{
-			map.draw();
+			//map.draw();
 			//camera.bitmapData.copyPixels(grid.bitmapData, new Rectangle(0, 0, grid.width, grid.height), new Point(grid.x, grid.y));
-			camera.bitmapData.copyPixels(selector.bitmapData, new Rectangle(0, 0, selector.width, selector.height), new Point(selector.x, selector.y), null, null, true);
-			camera.bitmapData.copyPixels(peasant.bitmapData, new Rectangle(0, 0, peasant.width, peasant.height), new Point(otherPlayer.x, otherPlayer.y), null, null, true);
-			camera.bitmapData.copyPixels(barracks.bitmapData, new Rectangle(0, 0, barracks.width, barracks.height), new Point(barracks.x, barracks.y), null, null, true);
+			//camera.bitmapData.copyPixels(selector.bitmapData, new Rectangle(0, 0, selector.width, selector.height), new Point(selector.x, selector.y), null, null, true);
+			//player1.draw();
+			//camera.bitmapData.copyPixels(peasant.bitmapData, new Rectangle(0, 0, peasant.width, peasant.height), new Point(otherPlayer.x, otherPlayer.y), null, null, true);
+			//camera.bitmapData.copyPixels(barracks.bitmapData, new Rectangle(0, 0, barracks.width, barracks.height), new Point(barracks.x, barracks.y), null, null, true);
 			
 			
-		}
-		
-		private function changeRandWalkDir(event:TimerEvent):void //changes the random walk direction when timer goes off
-		{
-			peasantDirection.x = Math.sin(Math.random()*360);
-			peasantDirection.y = Math.sin(Math.random()*360);
 		}
 		
 		private function drawTileSelector(x:int, y:int):void
@@ -195,7 +200,7 @@ package com.menohack.glebforge.model
 		}
 		
 		public function onKeyDown(e:KeyboardEvent):void
-		{
+		{			
 			var key:uint = e.keyCode;
 			if (Keyboard.W == key || Keyboard.UP == key)
 				camera.moveUp();
@@ -220,14 +225,19 @@ package com.menohack.glebforge.model
 		
 		public function onMouseClick(e:MouseEvent):void
 		{
-			end = new Vector3D(e.stageX - camera.bitmap.x, e.stageY - camera.bitmap.y, 0);
+			//end = new Vector3D(e.stageX - camera.bitmap.x, e.stageY - camera.bitmap.y, 0);
 		}
 		
 		public function onMouseMove(e:MouseEvent):void
 		{
-			drawTileSelector(e.stageX - camera.bitmap.x, e.stageY - camera.bitmap.y);
+			//drawTileSelector(e.stageX - camera.bitmap.x, e.stageY - camera.bitmap.y);
 		}
 		
+		public function redrawCursor(event:MouseEvent):void 
+		{ 
+			cursor.x = event.stageX; 
+			cursor.y = event.stageY; 
+		}
 		
 	}
 

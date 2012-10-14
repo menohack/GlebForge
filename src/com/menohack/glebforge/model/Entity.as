@@ -29,3 +29,27 @@ package com.menohack.glebforge.model
 	}
 
 }
+
+	//Component-based option one:
+	/*
+	public class Player extends Entity
+	{
+
+		public function Player()
+		{
+			addComponent(Component(new PrintCrapComponent()));
+			addComponent(Component(new PrintShitComponent()));
+		}
+		
+		public function play():void
+		{
+			var derp:PrintShitComponent = getComponent("PrintShitComponent") as PrintShitComponent;
+			if (derp != null)
+				derp.print();
+			
+			var herp:PrintCrapComponent = getComponent("PrintCrapComponent") as PrintCrapComponent;
+			if (herp != null)
+				herp.doit();
+		}
+	}
+	*/
