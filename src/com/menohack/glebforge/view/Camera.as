@@ -8,8 +8,13 @@ package com.menohack.glebforge.view
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	/**
-	 * ...
+	
+	/** The Camera class is a container class that contains all of the sprites that it
+	 * should render. This allows the position of all of the sprites to be adjusted at once
+	 * by changing the position of the camera itself. The Camera class does not contain the
+	 * GUI because it would never change based on the camera's position. There can be multiple
+	 * cameras for cinematics.
+	 * 
 	 * @author James Doverspike
 	 */
 	public class Camera extends Sprite
@@ -37,7 +42,7 @@ package com.menohack.glebforge.view
 		
 		public function derp(e:MouseEvent):void
 		{
-			
+			trace("Camera space was clicked");
 		}
 		
 		

@@ -14,7 +14,8 @@ package com.menohack.glebforge.model
 		function update(e:Event):void;
 		function onKeyDown(e:KeyboardEvent):void;
 		function onKeyUp(e:KeyboardEvent):void;
-		function onMouseClick(e:MouseEvent):void;
+		function onMouseDown(e:MouseEvent):void;
+		function onMouseUp(e:MouseEvent):void;
 		function onMouseMove(e:MouseEvent):void;
 
 	}

@@ -56,7 +56,8 @@ package com.menohack.glebforge.view
 			var camera:Camera;
 			
 			stage.addEventListener(MouseEvent.MOUSE_MOVE, game.onMouseMove);
-			stage.addEventListener(MouseEvent.CLICK, game.onMouseClick);
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, game.onMouseDown);
+			stage.addEventListener(MouseEvent.MOUSE_UP, game.onMouseUp);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, game.onKeyDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP, game.onKeyUp);
 			

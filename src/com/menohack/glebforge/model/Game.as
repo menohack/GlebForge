@@ -72,6 +72,8 @@ package com.menohack.glebforge.model
 		
 		private var fullscreen:Boolean = false;
 		
+		private var ui:UI;
+		
 		public function Game(s:Stage) 
 		{
 			stage = s;
@@ -121,8 +123,7 @@ package com.menohack.glebforge.model
 			
 			new Music();
 			
-			
-			new UI(stage);
+			ui = new UI(stage);
 			
 			cursor = new Sprite(); 
 			cursor.addChild(new cursorImage());
@@ -248,14 +249,24 @@ package com.menohack.glebforge.model
 			keys[key] = false;
 		}
 		
-		public function onMouseClick(e:MouseEvent):void
+		public function onMouseDown(e:MouseEvent):void
 		{
 			//end = new Vector3D(e.stageX - camera.bitmap.x, e.stageY - camera.bitmap.y, 0);
+			ui.startDrawingSelectArea(new Point(e.localX, e.localY));
+		}
+		
+		public function onMouseUp(e:MouseEvent):void
+		{
+			//end = new Vector3D(e.stageX - camera.bitmap.x, e.stageY - camera.bitmap.y, 0);
+			ui.stopDrawingSelectArea();
+			
 		}
 		
 		public function onMouseMove(e:MouseEvent):void
 		{
 			//drawTileSelector(e.stageX - camera.bitmap.x, e.stageY - camera.bitmap.y);
+			ui.drawSelectArea(new Point(e.stageX, e.stageY));
+			//trace("(" + e.localX + ", " + e.localY + ")");
 		}
 		
 		public function redrawCursor(event:MouseEvent):void 
