@@ -18,15 +18,18 @@ package com.menohack.glebforge.model
 		
 		private var buffer:ByteArray = new ByteArray();
 		
-		private var otherPlayer:Point;
+		private var otherPlayers:Vector.<Point>;
 		
 		private var me:Point;
 
-		public function NetworkComponent (otherPlayer:Point, me:Point, host:String = null, port:uint = 0) {
+		private var loadOtherPlayers:Function;
+		
+		public function NetworkComponent (otherPlayer:Point, me:Point, loadOtherPlayers:Function, host:String = null, port:uint = 0) {
 			super();
 			buffer.endian = Endian.LITTLE_ENDIAN;
-			this.otherPlayer = otherPlayer;
+			this.otherPlayers = new Vector.<Point>;
 			this.me = me;
+			this.loadOtherPlayers = loadOtherPlayers;
 			
 			configureListeners();
 			if (host && port)  {
@@ -58,27 +61,64 @@ package com.menohack.glebforge.model
 					return;
 				}
 				
-				
-				trace("Authentication successful!");
 				authenticated = true;
+				trace("Authentication successful!");
+				
+				var ba:ByteArray = new ByteArray();
+				//var name:String = "James";
+				var name:String = "Gleb";
+				ba.writeMultiByte(name, "us-ascii");
+				
+				buffer.clear();
+				buffer.length = 4;
+				buffer.writeInt(ba.length);
+				writeBytes(buffer, 0, 4);
+				flush();
+				
+				writeBytes(ba, 0, ba.length);
+				flush();
+				
+				
 				writePosition();
 				return;
 			}
 			else
 			{
+				
 				readPosition();
-				writePosition();
+				if (!reading)
+					writePosition();
 			}
 			
 		}
 		
+		private var reading:Boolean = false;
+		private var numNearbyPlayers:int;
+		
 		private function readPosition():void
 		{
+			if (!reading)
+			{
+				buffer.clear();
+				buffer.length = 4;
+				readBytes(buffer, 0, 4);
+				numNearbyPlayers = buffer.readInt();
+				reading = true;
+				return;
+			}
+			reading = false;
+			
 			buffer.clear();
-			buffer.length = 8;
-			readBytes(buffer, 0, 8);
-			otherPlayer.x = buffer.readFloat();
-			otherPlayer.y = buffer.readFloat();
+			buffer.length = numNearbyPlayers * 8;
+			readBytes(buffer, 0, buffer.length);
+			
+			otherPlayers = new Vector.<Point>;
+			for (var i:int = 0; i < numNearbyPlayers; i++)
+			{
+				var point:Point = new Point(buffer.readFloat(), buffer.readFloat());
+				otherPlayers.push(point);
+			}
+			loadOtherPlayers(otherPlayers);
 		}
 		
 		private function writePosition():void

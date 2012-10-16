@@ -74,6 +74,10 @@ package com.menohack.glebforge.model
 		
 		private var ui:UI;
 		
+		//private var otherPlayers:Vector.<Point> = new Vector.<Point>;
+		
+		private var otherSprites:Sprite = new Sprite();
+		
 		public function Game(s:Stage) 
 		{
 			stage = s;
@@ -115,11 +119,14 @@ package com.menohack.glebforge.model
 			*/
 			
 			//acm main: 128.220.251.35
+			//var ip:String = "128.220.251.35";
 			//acm http: 128.220.70.65
+			//var ip:String = "128.220.70.65";
 			//localhost: 127.0.0.1
+			var ip:String = "127.0.0.1";
 			otherPlayer = new Point(200, 200);
 			me = new Point(400, 200);
-			networkAdapter.addComponent(new NetworkComponent(otherPlayer, me, "128.220.251.35", 11000));
+			networkAdapter.addComponent(new NetworkComponent(otherPlayer, me, loadOtherPlayers, ip, 11000));
 			
 			new Music();
 			
@@ -131,6 +138,8 @@ package com.menohack.glebforge.model
 			 
 			stage.addEventListener(MouseEvent.MOUSE_MOVE, redrawCursor); 
 			Mouse.hide();
+			
+			camera.addChild(otherSprites);
 		}
 		
 		public function update(e:Event):void
@@ -289,6 +298,30 @@ package com.menohack.glebforge.model
 		{ 
 			cursor.x = event.stageX; 
 			cursor.y = event.stageY; 
+		}
+		
+		[Embed(source = "../../../../../lib/peasant.png")]
+		private var peasantImage:Class;
+		
+		private function loadOtherPlayers(otherPlayers:Vector.<Point>):void
+		{
+			//this.otherPlayers = otherPlayers;
+			
+			var numChildren:int = otherSprites.numChildren;
+			if (otherSprites.numChildren > 0)
+				otherSprites.removeChildren(0, numChildren);
+			
+			for (var i:int = 0; i < otherPlayers.length; i++)
+			{
+				var sprite:Sprite = new Sprite();
+				sprite.addChild(new peasantImage());
+				sprite.x = otherPlayers[i].x;
+				sprite.y = otherPlayers[i].y;
+				
+				otherSprites.addChild(sprite);
+			}
+			
+			trace("Drawing " + otherPlayers.length + " other players");
 		}
 		
 	}

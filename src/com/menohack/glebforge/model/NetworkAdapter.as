@@ -8,7 +8,7 @@ package com.menohack.glebforge.model
 	public class NetworkAdapter 
 	{
 		//The Socket connection to the server
-		private var socket:Socket;
+		//private var socket:Socket;
 		
 		private var networkComponents:Vector.<NetworkComponent>;
 		
