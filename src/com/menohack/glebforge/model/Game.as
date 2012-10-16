@@ -5,6 +5,8 @@ package com.menohack.glebforge.model
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
+	import flash.display.StageDisplayState;
+	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
@@ -65,9 +67,16 @@ package com.menohack.glebforge.model
 		
 		private var cursor:Sprite;
 		
+		//Whether each key is being held down, could change to time since last press
+		private var keys:Vector.<Boolean> = new Vector.<Boolean>(256);
+		
+		private var fullscreen:Boolean = false;
+		
 		public function Game(s:Stage) 
 		{
 			stage = s;
+			//s.displayState = "fullScreen";
+			stage.scaleMode = StageScaleMode.EXACT_FIT;
 			
 			selector = new tileSelector();
 			
@@ -169,10 +178,16 @@ package com.menohack.glebforge.model
 			
 			player1.update(delta);
 			
-			time = newTime;
+			if (keys[Keyboard.W] || keys[Keyboard.UP] || (stage.mouseY == 0 && fullscreen))
+				camera.moveUp(delta / 1000.0);
+			if (keys[Keyboard.S] || keys[Keyboard.DOWN] || (stage.mouseY >= stage.stageHeight-1 && fullscreen))
+				camera.moveDown(delta / 1000.0);
+			if (keys[Keyboard.A] || keys[Keyboard.LEFT] || (stage.mouseX == 0 && fullscreen))
+				camera.moveLeft(delta / 1000.0);
+			if (keys[Keyboard.D] || keys[Keyboard.RIGHT] || (stage.mouseX >= stage.stageWidth-1 && fullscreen))
+				camera.moveRight(delta / 1000.0);
 			
-			//I feel dirty as a game programmer calling draw from update
-			//draw();
+			time = newTime;
 		}
 		
 		private function draw():void
@@ -202,14 +217,23 @@ package com.menohack.glebforge.model
 		public function onKeyDown(e:KeyboardEvent):void
 		{			
 			var key:uint = e.keyCode;
-			if (Keyboard.W == key || Keyboard.UP == key)
-				camera.moveUp();
-			if (Keyboard.S == key || Keyboard.DOWN == key)
-				camera.moveDown();
-			if (Keyboard.A == key || Keyboard.LEFT == key)
-				camera.moveLeft();
-			if (Keyboard.D == key || Keyboard.RIGHT == key)
-				camera.moveRight();
+			keys[key] = true;
+				
+			//For some strange reason (probably having to do with Flash's default escape behavior)
+			//we have store when we are in fullscreen rather than just checking stage.displayState
+			if (Keyboard.ESCAPE == key)
+			{
+				if (!fullscreen)
+				{
+					stage.displayState = StageDisplayState.FULL_SCREEN;
+					fullscreen = true;
+				}
+				else
+				{
+					stage.displayState = StageDisplayState.NORMAL;
+					fullscreen = false;
+				}
+			}
 				
 			//temporary axe spawn and drop controls
 			if (Keyboard.G == key)
@@ -220,7 +244,8 @@ package com.menohack.glebforge.model
 		
 		public function onKeyUp(e:KeyboardEvent):void
 		{
-			
+			var key:uint = e.keyCode;
+			keys[key] = false;
 		}
 		
 		public function onMouseClick(e:MouseEvent):void

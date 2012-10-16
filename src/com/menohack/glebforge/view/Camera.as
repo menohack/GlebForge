@@ -22,7 +22,7 @@ package com.menohack.glebforge.view
 		
 		private var mapShape:Rectangle;
 		
-		private static const CAMERA_SPEED:Number = 20.0;
+		private static const CAMERA_SPEED:Number = 1000.0;
 		
 		public function Camera(width:uint, height:uint)
 		{
@@ -47,24 +47,24 @@ package com.menohack.glebforge.view
 			//bitmapData.copyPixels(renderData, new Rectangle(shape.x, shape.y, shape.x + shape.width, shape.y + shape.height), renderPosition, null, null, true);
 		}
 		
-		public function moveUp():void
+		public function moveUp(delta:Number):void
 		{
-			y += CAMERA_SPEED;
+			y += CAMERA_SPEED * delta;
 		}
 		
-		public function moveDown():void
+		public function moveDown(delta:Number):void
 		{
-			y -= CAMERA_SPEED;
+			y -= CAMERA_SPEED * delta;
 		}
 		
-		public function moveLeft():void
+		public function moveLeft(delta:Number):void
 		{
-			x += CAMERA_SPEED;
+			x += CAMERA_SPEED * delta;
 		}
 		
-		public function moveRight():void
+		public function moveRight(delta:Number):void
 		{
-			x -= CAMERA_SPEED;
+			x -= CAMERA_SPEED * delta;
 		}
 		
 	}

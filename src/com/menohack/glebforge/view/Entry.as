@@ -59,8 +59,11 @@ package com.menohack.glebforge.view
 			stage.addEventListener(MouseEvent.CLICK, game.onMouseClick);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, game.onKeyDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP, game.onKeyUp);
+			
+			//Disable right click
+			stage.addEventListener(MouseEvent.RIGHT_CLICK, function(e:Event):void { } );
+			
 			stage.frameRate = 120;
-			//Mouse.hide();
 			
 			
 			
