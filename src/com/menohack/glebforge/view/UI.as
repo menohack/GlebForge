@@ -30,15 +30,15 @@ package com.menohack.glebforge.view
 		public function UI(stage:Stage) 
 		{
 			sprite = new Sprite();
-			sprite.addChild(new uiImage());
-			
+						
 			shape = new Shape();
 			shape.visible = false;
 			sprite.addChild(shape);
-			
 			drawing = false;
 			
 			start = new Point();
+
+			sprite.addChild(new uiImage());
 			
 			stage.addChild(sprite);
 		}

@@ -179,14 +179,28 @@ package com.menohack.glebforge.model
 			
 			player1.update(delta);
 			
+			//Consider locking the camera in place when we are drawing the selection box. Wrap these if statements
+			//in another if and ask the UI if we are drawing.
 			if (keys[Keyboard.W] || keys[Keyboard.UP] || (stage.mouseY == 0 && fullscreen))
+			{
+				ui.stopDrawingSelectArea();
 				camera.moveUp(delta / 1000.0);
-			if (keys[Keyboard.S] || keys[Keyboard.DOWN] || (stage.mouseY >= stage.stageHeight-1 && fullscreen))
+			}
+			if (keys[Keyboard.S] || keys[Keyboard.DOWN] || (stage.mouseY >= stage.stageHeight - 1 && fullscreen))
+			{
+				ui.stopDrawingSelectArea();
 				camera.moveDown(delta / 1000.0);
+			}
 			if (keys[Keyboard.A] || keys[Keyboard.LEFT] || (stage.mouseX == 0 && fullscreen))
+			{
+				ui.stopDrawingSelectArea();
 				camera.moveLeft(delta / 1000.0);
-			if (keys[Keyboard.D] || keys[Keyboard.RIGHT] || (stage.mouseX >= stage.stageWidth-1 && fullscreen))
+			}
+			if (keys[Keyboard.D] || keys[Keyboard.RIGHT] || (stage.mouseX >= stage.stageWidth - 1 && fullscreen))
+			{
+				ui.stopDrawingSelectArea();
 				camera.moveRight(delta / 1000.0);
+			}
 			
 			time = newTime;
 		}
@@ -219,6 +233,9 @@ package com.menohack.glebforge.model
 		{			
 			var key:uint = e.keyCode;
 			keys[key] = true;
+			
+			//Stop drawing the selection box whenever a key is pressed
+			ui.stopDrawingSelectArea();
 				
 			//For some strange reason (probably having to do with Flash's default escape behavior)
 			//we have store when we are in fullscreen rather than just checking stage.displayState
@@ -252,7 +269,7 @@ package com.menohack.glebforge.model
 		public function onMouseDown(e:MouseEvent):void
 		{
 			//end = new Vector3D(e.stageX - camera.bitmap.x, e.stageY - camera.bitmap.y, 0);
-			ui.startDrawingSelectArea(new Point(e.localX, e.localY));
+			ui.startDrawingSelectArea(new Point(e.stageX, e.stageY));
 		}
 		
 		public function onMouseUp(e:MouseEvent):void
@@ -266,7 +283,6 @@ package com.menohack.glebforge.model
 		{
 			//drawTileSelector(e.stageX - camera.bitmap.x, e.stageY - camera.bitmap.y);
 			ui.drawSelectArea(new Point(e.stageX, e.stageY));
-			//trace("(" + e.localX + ", " + e.localY + ")");
 		}
 		
 		public function redrawCursor(event:MouseEvent):void 
