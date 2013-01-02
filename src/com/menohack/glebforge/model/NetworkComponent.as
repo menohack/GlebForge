@@ -78,6 +78,14 @@ package com.menohack.glebforge.model
 				writeBytes(ba, 0, ba.length);
 				flush();
 				
+				//Write the password
+				ba = new ByteArray();
+				ba.length = 128;
+				ba.writeMultiByte("glebpass", "us-ascii");
+				for (var i:uint = ba.position; i < 128; i++)
+					ba.writeMultiByte(" ", "us-ascii");
+				writeBytes(ba, 0, 128);
+				
 				
 				writePosition();
 				return;
