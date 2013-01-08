@@ -1,25 +1,22 @@
-package com.menohack.glebforge.model 
+package com.menohack.glebforge.controller 
 {
+	import com.menohack.glebforge.model.Model;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
-	import flash.geom.Point;
 	
 	/**
 	 * ...
 	 * @author James Doverspike
 	 */
-	public interface Model
+	public interface Controller 
 	{
-		function Model();
-		function update(e:Event):void;
+		//function update(e:Event):void;
 		function onKeyDown(e:KeyboardEvent):void;
 		function onKeyUp(e:KeyboardEvent):void;
 		function onMouseDown(e:MouseEvent):void;
 		function onMouseUp(e:MouseEvent):void;
-		//function onMouseMove(e:MouseEvent):void;
-		function SelectArea(topLeft:Point, bottomRight:Point):void;
-
+		function onMouseMove(e:MouseEvent):void;
 	}
 	
 }

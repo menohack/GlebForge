@@ -1,5 +1,6 @@
 package com.menohack.glebforge.model 
 {
+	import com.menohack.glebforge.view.View;
 	import flash.display.Sprite;
 	
 	
@@ -13,6 +14,11 @@ package com.menohack.glebforge.model
 		public function GameObject() 
 		{
 			
+		}
+		
+		public function SetVisible(view:View):void
+		{
+			view.AddSprite(this);
 		}
 		
 	}

@@ -1,5 +1,7 @@
 package com.menohack.glebforge.view
 {
+	import com.menohack.glebforge.controller.Controller;
+	import com.menohack.glebforge.controller.Input;
 	import com.menohack.glebforge.model.Game;
 	import com.menohack.glebforge.model.Model;
 	import com.menohack.glebforge.model.Test;
@@ -25,6 +27,7 @@ package com.menohack.glebforge.view
 	public class Entry extends Sprite 
 	{
 		private var game:Model;
+		private var controller:Controller;
 		
 		public function Entry():void 
 		{
@@ -51,11 +54,14 @@ package com.menohack.glebforge.view
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
-			game = new Game(stage);
+			var ui:UI = new UI(stage);
+			
+			game = new Game(stage, ui, ui.camera);
+			controller = new Input(game, ui);
 			
 			var camera:Camera;
 			
-			stage.addEventListener(MouseEvent.MOUSE_MOVE, game.onMouseMove);
+			stage.addEventListener(MouseEvent.MOUSE_MOVE, controller.onMouseMove);
 			stage.addEventListener(MouseEvent.MOUSE_DOWN, game.onMouseDown);
 			stage.addEventListener(MouseEvent.MOUSE_UP, game.onMouseUp);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, game.onKeyDown);

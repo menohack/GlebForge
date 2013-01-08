@@ -36,8 +36,7 @@ package com.menohack.glebforge.model
 		[Embed(source = "../../../../../lib/tileSelector.png")]
 		private var tileSelector:Class;
 		
-		[Embed(source = "../../../../../lib/cursor.png")]
-		private var cursorImage:Class;
+
 		
 		private var selector:Bitmap;
 		
@@ -68,20 +67,20 @@ package com.menohack.glebforge.model
 		
 		public var player1:Player;
 		
-		private var cursor:Sprite;
+		
 		
 		//Whether each key is being held down, could change to time since last press
 		private var keys:Vector.<Boolean> = new Vector.<Boolean>(256);
 		
 		private var fullscreen:Boolean = false;
 		
-		private var ui:UI;
+		public var ui:UI;
 		
 		//private var otherPlayers:Vector.<Point> = new Vector.<Point>;
 		
 		private var otherSprites:Sprite = new Sprite();
 		
-		public function Game(s:Stage) 
+		public function Game(s:Stage, ui:UI, camera:Camera) 
 		{
 			stage = s;
 			//s.displayState = "fullScreen";
@@ -89,14 +88,18 @@ package com.menohack.glebforge.model
 			
 			selector = new tileSelector();
 			
+			/*
 			camera = new Camera(stage.stageWidth, stage.stageHeight);
 			stage.addChild(camera);
+			*/
+			this.camera = camera;
 			
+			/*
 			map = new Map(camera);
 			for (var bx:int = -5; bx < 5; bx++)
 				for (var by:int = -5; by < 5; by++)
 					map.addBlock(bx, by);
-			
+			*/
 			barracks = new barracksImage();
 			position.x = stage.stageWidth / 2 - barracks.width/2;
 			position.y = stage.stageHeight / 2 - barracks.height / 2;
@@ -135,14 +138,10 @@ package com.menohack.glebforge.model
 			
 			new Music();
 			
-			ui = new UI(stage);
+			this.ui = ui;
+			//ui = new UI(stage);
 			
-			cursor = new Sprite(); 
-			cursor.addChild(new cursorImage());
-			stage.addChild(cursor); 
-			 
-			stage.addEventListener(MouseEvent.MOUSE_MOVE, redrawCursor); 
-			Mouse.hide();
+			
 			
 			camera.addChild(otherSprites);
 		}
@@ -293,17 +292,9 @@ package com.menohack.glebforge.model
 			
 		}
 		
-		public function onMouseMove(e:MouseEvent):void
-		{
-			//drawTileSelector(e.stageX - camera.bitmap.x, e.stageY - camera.bitmap.y);
-			ui.drawSelectArea(new Point(e.stageX, e.stageY));
-		}
 		
-		public function redrawCursor(event:MouseEvent):void 
-		{ 
-			cursor.x = event.stageX; 
-			cursor.y = event.stageY; 
-		}
+		
+
 		
 		[Embed(source = "../../../../../lib/peasant.png")]
 		private var peasantImage:Class;
@@ -327,6 +318,16 @@ package com.menohack.glebforge.model
 			}
 			
 			trace("Drawing " + otherPlayers.length + " other players");
+		}
+		
+		/**
+		 * This function is called by the controller to signal that an area was selected.
+		 * @param	topLeft	The top left position of the box.
+		 * @param	bottomRight	The bottom right position of the box.
+		 */
+		public function SelectArea(topLeft:Point, bottomRight:Point):void
+		{
+			
 		}
 		
 	}

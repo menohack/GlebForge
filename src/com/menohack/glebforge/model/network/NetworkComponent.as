@@ -9,6 +9,7 @@ package com.menohack.glebforge.model.network
 	import flash.net.Socket;
 	import flash.utils.Endian;
 	import flash.utils.ByteArray;
+	import com.menohack.glebforge.model.World;
 
 	public class NetworkComponent extends flash.net.Socket {
 		//private var me:Point;
@@ -25,6 +26,7 @@ package com.menohack.glebforge.model.network
 			//this.loadOtherPlayers = loadOtherPlayers;
 			
 			state = new AuthenticationState(this);
+			var world:World = World.GetInstance();
 			
 			configureListeners();
 			if (host && port)  {
