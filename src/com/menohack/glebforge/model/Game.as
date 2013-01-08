@@ -1,5 +1,6 @@
 package com.menohack.glebforge.model 
 {
+	import com.menohack.glebforge.controller.Controller;
 	import com.menohack.glebforge.model.network.NetworkAdapter;
 	import com.menohack.glebforge.model.network.NetworkComponent;
 	import com.menohack.glebforge.view.RenderComponent;
@@ -68,9 +69,8 @@ package com.menohack.glebforge.model
 		public var player1:Player;
 		
 		
+		private var controller:Controller;
 		
-		//Whether each key is being held down, could change to time since last press
-		private var keys:Vector.<Boolean> = new Vector.<Boolean>(256);
 		
 		private var fullscreen:Boolean = false;
 		
@@ -80,8 +80,9 @@ package com.menohack.glebforge.model
 		
 		private var otherSprites:Sprite = new Sprite();
 		
-		public function Game(s:Stage, ui:UI, camera:Camera) 
+		public function Game(s:Stage, ui:UI, camera:Camera, controller:Controller) 
 		{
+			this.controller = controller;
 			stage = s;
 			//s.displayState = "fullScreen";
 			stage.scaleMode = StageScaleMode.EXACT_FIT;
@@ -146,7 +147,7 @@ package com.menohack.glebforge.model
 			camera.addChild(otherSprites);
 		}
 		
-		public function update(e:Event):void
+		public function Update():void
 		{
 			var newTime:uint = getTimer();
 			var delta:uint = newTime - time;
@@ -192,28 +193,8 @@ package com.menohack.glebforge.model
 			
 			player1.update(delta);
 			
-			//Consider locking the camera in place when we are drawing the selection box. Wrap these if statements
-			//in another if and ask the UI if we are drawing.
-			if (keys[Keyboard.W] || keys[Keyboard.UP] || (stage.mouseY == 0 && fullscreen))
-			{
-				ui.stopDrawingSelectArea();
-				camera.moveUp(delta / 1000.0);
-			}
-			if (keys[Keyboard.S] || keys[Keyboard.DOWN] || (stage.mouseY >= stage.stageHeight - 1 && fullscreen))
-			{
-				ui.stopDrawingSelectArea();
-				camera.moveDown(delta / 1000.0);
-			}
-			if (keys[Keyboard.A] || keys[Keyboard.LEFT] || (stage.mouseX == 0 && fullscreen))
-			{
-				ui.stopDrawingSelectArea();
-				camera.moveLeft(delta / 1000.0);
-			}
-			if (keys[Keyboard.D] || keys[Keyboard.RIGHT] || (stage.mouseX >= stage.stageWidth - 1 && fullscreen))
-			{
-				ui.stopDrawingSelectArea();
-				camera.moveRight(delta / 1000.0);
-			}
+			//I dunno about this
+			//controller.Update(delta);
 			
 			time = newTime;
 		}
@@ -242,55 +223,9 @@ package com.menohack.glebforge.model
 			}
 		}
 		
-		public function onKeyDown(e:KeyboardEvent):void
-		{			
-			var key:uint = e.keyCode;
-			keys[key] = true;
-			
-			//Stop drawing the selection box whenever a key is pressed
-			ui.stopDrawingSelectArea();
-				
-			//For some strange reason (probably having to do with Flash's default escape behavior)
-			//we have store when we are in fullscreen rather than just checking stage.displayState
-			if (Keyboard.ESCAPE == key)
-			{
-				if (!fullscreen)
-				{
-					stage.displayState = StageDisplayState.FULL_SCREEN;
-					fullscreen = true;
-				}
-				else
-				{
-					stage.displayState = StageDisplayState.NORMAL;
-					fullscreen = false;
-				}
-			}
-				
-			//temporary axe spawn and drop controls
-			if (Keyboard.G == key)
-				trace("SPAWN AXE");
-			if (Keyboard.H == key)
-				trace("DROP AXE");
-		}
+
 		
-		public function onKeyUp(e:KeyboardEvent):void
-		{
-			var key:uint = e.keyCode;
-			keys[key] = false;
-		}
 		
-		public function onMouseDown(e:MouseEvent):void
-		{
-			//end = new Vector3D(e.stageX - camera.bitmap.x, e.stageY - camera.bitmap.y, 0);
-			ui.startDrawingSelectArea(new Point(e.stageX, e.stageY));
-		}
-		
-		public function onMouseUp(e:MouseEvent):void
-		{
-			//end = new Vector3D(e.stageX - camera.bitmap.x, e.stageY - camera.bitmap.y, 0);
-			ui.stopDrawingSelectArea();
-			
-		}
 		
 		
 		
@@ -328,6 +263,19 @@ package com.menohack.glebforge.model
 		public function SelectArea(topLeft:Point, bottomRight:Point):void
 		{
 			
+		}
+		
+		/**
+		 * Gets a vector containing all of the sprites that should be drawn for the given frame.
+		 * @param	delta The change in milliseconds since the last frame.
+		 * @return	Returns a vector containing the sprites.
+		 */
+		public function GetSprites(delta:Number):Vector.<Sprite>
+		{
+			var sprites:Vector.<Sprite> = new Vector.<Sprite>(10);
+			sprites[0] = new Sprite();
+			
+			return sprites;
 		}
 		
 	}

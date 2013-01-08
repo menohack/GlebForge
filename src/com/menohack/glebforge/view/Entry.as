@@ -5,6 +5,8 @@ package com.menohack.glebforge.view
 	import com.menohack.glebforge.model.Game;
 	import com.menohack.glebforge.model.Model;
 	import com.menohack.glebforge.model.Test;
+	import com.menohack.glebforge.model.TestModel;
+	import com.menohack.glebforge.controller.TestController;
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -28,10 +30,11 @@ package com.menohack.glebforge.view
 	{
 		private var game:Model;
 		private var controller:Controller;
+		private var view:View;
 		
 		public function Entry():void 
 		{
-			var testing:Boolean = false;
+			var testing:Boolean = true;
 			
 			if (testing)
 			{
@@ -40,21 +43,38 @@ package com.menohack.glebforge.view
 			}
 			else
 			{
-				if (stage) init();
-				else addEventListener(Event.ADDED_TO_STAGE, init);
+				//if (stage) init();
+				//else addEventListener(Event.ADDED_TO_STAGE, init);
 			}
 		}
 		
 		private function test(e:Event = null):void
 		{
-			var test:Test = new Test(stage);
+			//var test:Test = new Test(stage);
+			
+			var model:Model = new TestModel();
+			var view:View = new TestView(model, stage);
+			var controller:Controller = new TestController(model);
+			
+			//Disable right click
+			stage.addEventListener(MouseEvent.RIGHT_CLICK, function(e:Event):void { } );
+			
+			stage.frameRate = 60;
+			
+			stage.addEventListener(MouseEvent.MOUSE_MOVE, controller.onMouseMove);
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, controller.onMouseDown);
+			stage.addEventListener(MouseEvent.MOUSE_UP, controller.onMouseUp);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, controller.onKeyDown);
+			stage.addEventListener(KeyboardEvent.KEY_UP, controller.onKeyUp);
+			
+			addEventListener(Event.ENTER_FRAME, view.Update);
 		}
-		
+		/*
 		private function init(e:Event = null):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
-			var ui:UI = new UI(stage);
+			view = new UI(stage);
 			
 			game = new Game(stage, ui, ui.camera);
 			controller = new Input(game, ui);
@@ -62,10 +82,10 @@ package com.menohack.glebforge.view
 			var camera:Camera;
 			
 			stage.addEventListener(MouseEvent.MOUSE_MOVE, controller.onMouseMove);
-			stage.addEventListener(MouseEvent.MOUSE_DOWN, game.onMouseDown);
-			stage.addEventListener(MouseEvent.MOUSE_UP, game.onMouseUp);
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, game.onKeyDown);
-			stage.addEventListener(KeyboardEvent.KEY_UP, game.onKeyUp);
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, controller.onMouseDown);
+			stage.addEventListener(MouseEvent.MOUSE_UP, controller.onMouseUp);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, controller.onKeyDown);
+			stage.addEventListener(KeyboardEvent.KEY_UP, controller.onKeyUp);
 			
 			//Disable right click
 			stage.addEventListener(MouseEvent.RIGHT_CLICK, function(e:Event):void { } );
@@ -74,6 +94,7 @@ package com.menohack.glebforge.view
 			
 			
 			
+			//Change this to view.Update and remove the create function when you can
 			addEventListener(Event.ENTER_FRAME, create);
 		}
 		
@@ -82,10 +103,10 @@ package com.menohack.glebforge.view
 			removeEventListener(Event.ENTER_FRAME, create);
 			
 			
-			addEventListener(Event.ENTER_FRAME, game.update);
+			addEventListener(Event.ENTER_FRAME, view.Update);
 		}
 		
-		
+		*/
 
 		
 	}

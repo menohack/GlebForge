@@ -82,13 +82,13 @@ package com.menohack.glebforge.view
 			shape.graphics.lineStyle(1, 0x00FF00);
 		}
 		
-		public function startDrawingSelectArea(start:Point):void
+		public function StartDrawingSelectArea(start:Point):void
 		{
 			this.start = start;
 			drawing = true;
 		}
 		
-		public function drawSelectArea(end:Point):void
+		public function DrawSelectArea(end:Point):void
 		{
 			if (drawing)
 			{
@@ -100,7 +100,7 @@ package com.menohack.glebforge.view
 			}
 		}
 		
-		public function stopDrawingSelectArea():void
+		public function StopDrawingSelectArea():void
 		{
 			shape.visible = false;
 			drawing = false;
@@ -109,6 +109,11 @@ package com.menohack.glebforge.view
 		public function AddSprite(sprite:Sprite):void
 		{
 			
+		}
+		
+		public function Update():void
+		{
+			controller.Update();
 		}
 	}
 

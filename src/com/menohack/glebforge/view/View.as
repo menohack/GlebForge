@@ -2,6 +2,7 @@ package com.menohack.glebforge.view
 {
 	import flash.display.Sprite;
 	import flash.geom.Point;
+	import flash.events.Event;
 	
 	/**
 	 * ...
@@ -9,8 +10,12 @@ package com.menohack.glebforge.view
 	 */
 	public interface View 
 	{
-		function AddSprite(sprite:Sprite):void
-		function drawSelectArea(end:Point):void
+		function AddSprite(sprite:Sprite):void;
+		function DrawSelectArea(end:Point):void;
+		function StopDrawingSelectArea():void;
+		function StartDrawingSelectArea(start:Point):void;
+		//Not sure if I want to keep this, maybe the view should update the model
+		function Update(e:Event):void;
 	}
 	
 }
