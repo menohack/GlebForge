@@ -12,7 +12,7 @@ package com.menohack.glebforge.model.network
 	{
 		//private var network:NetworkComponent;
 		
-		private static var AUTHENTICATION_CLIENT_VALUE:int = 390458;
+		private static var AUTHENTICATION_CLIENT_VALUE:int =  390458;
 		private static var AUTHENTICATION_SERVER_VALUE:int = -283947;
 
 		public function AuthenticationState(network:NetworkComponent)
