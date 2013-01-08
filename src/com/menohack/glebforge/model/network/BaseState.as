@@ -1,6 +1,6 @@
 package com.menohack.glebforge.model.network 
 {
-	import com.menohack.glebforge.model.NetworkComponent;
+	import com.menohack.glebforge.model.network.NetworkComponent;
 	import flash.utils.ByteArray;
 	import flash.utils.getQualifiedClassName;
 	import flash.utils.Endian;

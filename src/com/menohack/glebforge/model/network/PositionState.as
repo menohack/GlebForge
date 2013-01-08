@@ -1,7 +1,8 @@
 package com.menohack.glebforge.model.network 
 {
-	import com.menohack.glebforge.model.NetworkComponent;
+	import com.menohack.glebforge.model.network.NetworkComponent;
 	import flash.geom.Point;
+	
 	/**
 	 * ...
 	 * @author James Doverspike

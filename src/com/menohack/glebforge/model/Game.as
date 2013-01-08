@@ -1,5 +1,7 @@
 package com.menohack.glebforge.model 
 {
+	import com.menohack.glebforge.model.network.NetworkAdapter;
+	import com.menohack.glebforge.model.network.NetworkComponent;
 	import com.menohack.glebforge.view.RenderComponent;
 	import com.menohack.glebforge.view.UI;
 	import flash.display.Bitmap;
@@ -61,7 +63,8 @@ package com.menohack.glebforge.model
 		
 		public var me:Point;
 		
-		public static var networkAdapter:NetworkAdapter = new NetworkAdapter();
+		private var networkComponent:NetworkComponent;
+		private var networkAdapter:NetworkAdapter;
 		
 		public var player1:Player;
 		
@@ -126,7 +129,9 @@ package com.menohack.glebforge.model
 			var ip:String = "127.0.0.1";
 			otherPlayer = new Point(200, 200);
 			me = new Point(400, 200);
-			networkAdapter.addComponent(new NetworkComponent(otherPlayer, me, loadOtherPlayers, ip, 11000));
+
+			networkAdapter = new NetworkAdapter();
+			networkComponent = new NetworkComponent(networkAdapter, ip, 11000);
 			
 			new Music();
 			

@@ -1,8 +1,9 @@
 package com.menohack.glebforge.model.network 
 {
-	import com.menohack.glebforge.model.NetworkComponent;
+	import com.menohack.glebforge.model.network.NetworkComponent;
 	import com.menohack.glebforge.model.network.PositionState;
 	import flash.utils.ByteArray;
+	
 	/**
 	 * ...
 	 * @author James Doverspike

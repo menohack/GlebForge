@@ -1,4 +1,4 @@
-package com.menohack.glebforge.model 
+package com.menohack.glebforge.model.network 
 {
 	import com.menohack.glebforge.model.network.AuthenticationState;
 	import com.menohack.glebforge.model.network.BaseState;
@@ -18,7 +18,7 @@ package com.menohack.glebforge.model
 		//The current state of network communication
 		private var state:BaseState;
 		
-		public function NetworkComponent (otherPlayer:Point, me:Point, loadOtherPlayers:Function, host:String = null, port:uint = 0) {
+		public function NetworkComponent (networkAdapter:NetworkAdapter, host:String = null, port:uint = 0) {
 			super();
 			
 			//this.me = me;

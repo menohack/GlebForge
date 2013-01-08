@@ -8,7 +8,7 @@ package com.menohack.glebforge.model
 	 * ...
 	 * @author James Doverspike
 	 */
-	public interface Model 
+	public interface Model
 	{
 		function Model();
 		function update(e:Event):void;
