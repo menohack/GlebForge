@@ -3,14 +3,20 @@ package com.menohack.glebforge.model
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.display.Bitmap;
+	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import mx.core.BitmapAsset;
+	import flash.events.Event;
+	import flash.events.KeyboardEvent;
+	import flash.events.MouseEvent;
+	
+	import com.menohack.glebforge.controller.Controller;
 	
 	/**
 	 * ...
 	 * @author James Doverspike
 	 */
-	public class TestModel implements Model 
+	public class TestModel implements Model, Controller
 	{
 		/**
 		 * Below is some sample data for testing
@@ -44,7 +50,10 @@ package com.menohack.glebforge.model
 			endPosition = new Point(400.0, 200.0);
 		}
 		
-		
+		public function GetController():Controller
+		{
+			return this;
+		}
 		
 		public function Update(delta:Number):void
 		{
@@ -81,6 +90,31 @@ package com.menohack.glebforge.model
 			sprites[1] = peasantSprite2;
 			
 			return sprites;
+		}
+		
+		public function onKeyDown(e:KeyboardEvent):void
+		{
+			trace("Key depressed!");
+		}
+		
+		public function onKeyUp(e:KeyboardEvent):void
+		{
+			trace("Key released!");
+		}
+		
+		public function onMouseDown(e:MouseEvent):void
+		{
+			endPosition = new Point(e.stageX, e.stageY);
+		}
+		
+		public function onMouseUp(e:MouseEvent):void
+		{
+			
+		}
+		
+		public function onMouseMove(e:MouseEvent):void
+		{
+			
 		}
 	}
 

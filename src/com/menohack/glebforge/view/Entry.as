@@ -6,7 +6,6 @@ package com.menohack.glebforge.view
 	import com.menohack.glebforge.model.Model;
 	import com.menohack.glebforge.model.Test;
 	import com.menohack.glebforge.model.TestModel;
-	import com.menohack.glebforge.controller.TestController;
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -34,27 +33,28 @@ package com.menohack.glebforge.view
 		
 		public function Entry():void 
 		{
-			var testing:Boolean = true;
+			var testing:Boolean = false;
 			
 			if (testing)
 			{
-				if (stage) test();
-				else addEventListener(Event.ADDED_TO_STAGE, test);
+				//if (stage) test();
+				//else addEventListener(Event.ADDED_TO_STAGE, test);
 			}
 			else
 			{
-				//if (stage) init();
-				//else addEventListener(Event.ADDED_TO_STAGE, init);
+				if (stage) init();
+				else addEventListener(Event.ADDED_TO_STAGE, init);
 			}
 		}
-		
+		/*
 		private function test(e:Event = null):void
 		{
 			//var test:Test = new Test(stage);
 			
 			var model:Model = new TestModel();
 			var view:View = new TestView(model, stage);
-			var controller:Controller = new TestController(model);
+			
+			var controller:Controller = model.GetController();
 			
 			//Disable right click
 			stage.addEventListener(MouseEvent.RIGHT_CLICK, function(e:Event):void { } );
@@ -69,15 +69,15 @@ package com.menohack.glebforge.view
 			
 			addEventListener(Event.ENTER_FRAME, view.Update);
 		}
-		/*
+		*/
 		private function init(e:Event = null):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
-			view = new UI(stage);
-			
-			game = new Game(stage, ui, ui.camera);
-			controller = new Input(game, ui);
+			game = new Game(stage);
+			view = new UI(game, stage);
+			game.SetView(view);
+			controller = game.GetController();
 			
 			var camera:Camera;
 			
@@ -105,10 +105,6 @@ package com.menohack.glebforge.view
 			
 			addEventListener(Event.ENTER_FRAME, view.Update);
 		}
-		
-		*/
-
-		
 	}
 	
 }

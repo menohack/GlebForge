@@ -10,12 +10,20 @@ package com.menohack.glebforge.view
 	 */
 	public interface View 
 	{
-		function AddSprite(sprite:Sprite):void;
 		function DrawSelectArea(end:Point):void;
 		function StopDrawingSelectArea():void;
 		function StartDrawingSelectArea(start:Point):void;
-		//Not sure if I want to keep this, maybe the view should update the model
 		function Update(e:Event):void;
+		function get Width():uint;
+		function set Width(width:uint):void;
+		function get Height():uint;
+		function set Height(height:uint):void;
+		function set Fullscreen(fullscreen:Boolean):void;
+		function get Fullscreen():Boolean;
+
+		function moveUp(delta:Number):void;
+		function moveDown(delta:Number):void;
+		function moveLeft(delta:Number):void;
+		function moveRight(delta:Number):void;
 	}
-	
 }

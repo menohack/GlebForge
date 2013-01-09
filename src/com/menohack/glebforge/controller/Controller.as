@@ -9,9 +9,8 @@ package com.menohack.glebforge.controller
 	 * ...
 	 * @author James Doverspike
 	 */
-	public interface Controller 
+	public interface Controller
 	{
-		//function update(e:Event):void;
 		function onKeyDown(e:KeyboardEvent):void;
 		function onKeyUp(e:KeyboardEvent):void;
 		function onMouseDown(e:MouseEvent):void;

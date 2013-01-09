@@ -1,10 +1,12 @@
 package com.menohack.glebforge.model 
 {
 	import com.menohack.glebforge.controller.Controller;
+	import com.menohack.glebforge.controller.Input;
 	import com.menohack.glebforge.model.network.NetworkAdapter;
 	import com.menohack.glebforge.model.network.NetworkComponent;
 	import com.menohack.glebforge.view.RenderComponent;
 	import com.menohack.glebforge.view.UI;
+	import com.menohack.glebforge.view.View;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
@@ -43,7 +45,7 @@ package com.menohack.glebforge.model
 		
 		private var barracks:Bitmap;
 		
-		private var time:uint = 0;
+		//private var time:uint = 0;
 		
 		private var endX:uint;
 		private var endY:uint;
@@ -74,15 +76,18 @@ package com.menohack.glebforge.model
 		
 		private var fullscreen:Boolean = false;
 		
-		public var ui:UI;
+		public var ui:View;
+		
+		private var input:Input;
 		
 		//private var otherPlayers:Vector.<Point> = new Vector.<Point>;
 		
 		private var otherSprites:Sprite = new Sprite();
 		
-		public function Game(s:Stage, ui:UI, camera:Camera, controller:Controller) 
+		public function Game(s:Stage) 
 		{
-			this.controller = controller;
+			input = new Input();
+			
 			stage = s;
 			//s.displayState = "fullScreen";
 			stage.scaleMode = StageScaleMode.EXACT_FIT;
@@ -93,7 +98,7 @@ package com.menohack.glebforge.model
 			camera = new Camera(stage.stageWidth, stage.stageHeight);
 			stage.addChild(camera);
 			*/
-			this.camera = camera;
+			//this.camera = camera;
 			
 			/*
 			map = new Map(camera);
@@ -139,7 +144,7 @@ package com.menohack.glebforge.model
 			
 			new Music();
 			
-			this.ui = ui;
+			//this.ui = ui;
 			//ui = new UI(stage);
 			
 			
@@ -147,10 +152,21 @@ package com.menohack.glebforge.model
 			camera.addChild(otherSprites);
 		}
 		
-		public function Update():void
+		public function SetView(view:View):void
 		{
-			var newTime:uint = getTimer();
-			var delta:uint = newTime - time;
+			ui = view;
+			input.view = view;
+		}
+		
+		public function GetController():Controller
+		{
+			return input;
+		}
+		
+		public function Update(delta:Number):void
+		{
+			//var newTime:uint = getTimer();
+			//var delta:uint = newTime - time;
 			
 			position.x = barracks.x;
 			position.y = barracks.y;
@@ -193,43 +209,11 @@ package com.menohack.glebforge.model
 			
 			player1.update(delta);
 			
-			//I dunno about this
-			//controller.Update(delta);
+			input.Update(camera, fullscreen, stage, delta);
 			
-			time = newTime;
+			//time = newTime;
 		}
 		
-		private function draw():void
-		{
-			//map.draw();
-			//camera.bitmapData.copyPixels(grid.bitmapData, new Rectangle(0, 0, grid.width, grid.height), new Point(grid.x, grid.y));
-			//camera.bitmapData.copyPixels(selector.bitmapData, new Rectangle(0, 0, selector.width, selector.height), new Point(selector.x, selector.y), null, null, true);
-			//player1.draw();
-			//camera.bitmapData.copyPixels(peasant.bitmapData, new Rectangle(0, 0, peasant.width, peasant.height), new Point(otherPlayer.x, otherPlayer.y), null, null, true);
-			//camera.bitmapData.copyPixels(barracks.bitmapData, new Rectangle(0, 0, barracks.width, barracks.height), new Point(barracks.x, barracks.y), null, null, true);
-			
-			
-		}
-		
-		private function drawTileSelector(x:int, y:int):void
-		{
-			if (x > stage.stageWidth || x < 0 || y > stage.stageHeight || y < 0)
-				selector.visible = true;
-			else
-			{
-				selector.x = Math.floor((x) / selector.width) * selector.width;
-				selector.y = Math.floor((y) / selector.height) * selector.height;
-				selector.visible = true;
-			}
-		}
-		
-
-		
-		
-		
-		
-		
-
 		
 		[Embed(source = "../../../../../lib/peasant.png")]
 		private var peasantImage:Class;
@@ -270,7 +254,7 @@ package com.menohack.glebforge.model
 		 * @param	delta The change in milliseconds since the last frame.
 		 * @return	Returns a vector containing the sprites.
 		 */
-		public function GetSprites(delta:Number):Vector.<Sprite>
+		public function GetSprites():Vector.<Sprite>
 		{
 			var sprites:Vector.<Sprite> = new Vector.<Sprite>(10);
 			sprites[0] = new Sprite();
@@ -278,6 +262,8 @@ package com.menohack.glebforge.model
 			return sprites;
 		}
 		
+		
+
 	}
 
 }

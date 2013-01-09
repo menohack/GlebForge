@@ -25,10 +25,6 @@ package com.menohack.glebforge.view
 			
 			lastTime = new Date();
 		}
-		public function AddSprite(sprite:Sprite):void
-		{
-			
-		}
 		
 		public function DrawSelectArea(end:Point):void
 		{
