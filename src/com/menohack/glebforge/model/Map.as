@@ -4,6 +4,7 @@ package com.menohack.glebforge.model
 	import com.menohack.glebforge.view.RenderComponent;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.Sprite;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
@@ -11,12 +12,10 @@ package com.menohack.glebforge.model
 	 * ...
 	 * @author James Doverspike
 	 */
-	public class Map 
+	public class Map extends Entity
 	{
 		[Embed(source = "../../../../../lib/grasstiles.png")]
 		private var grassTiles:Class;
-		
-		private var render:RenderComponent;
 		
 		private var tiles:Vector.<BitmapData>;
 		
@@ -29,10 +28,13 @@ package com.menohack.glebforge.model
 		
 		public function Map(camera:Camera) 
 		{
+			var render:RenderComponent = new RenderComponent();
+			AddComponent(render);
+			
 			blocks = new Vector.<Block>();
-			render = new RenderComponent();
-			render.Camera = camera;
-			render.Bitmap = makeBlock(0, 0);
+			//var render:RenderComponent = new RenderComponent();
+			//AddComponent(render);
+			//render.Bitmap = makeBlock(0, 0);
 		}
 		
 		public function addBlock(x:int, y:int):Boolean
@@ -40,7 +42,7 @@ package com.menohack.glebforge.model
 			var block:Bitmap = makeBlock(x, y);
 			if (block != null)
 			{
-				render.Bitmap = block;
+				(GetComponent(RenderComponent) as RenderComponent).Bitmap = block;
 				return true;
 			}
 			else
@@ -85,6 +87,10 @@ package com.menohack.glebforge.model
 			
 			var block:Block = new Block(bitmap, x, y);
 			blocks.push(block);
+			
+			var render:RenderComponent = GetComponent(RenderComponent) as RenderComponent;
+			if (render != null)
+				render.GetSprite().addChild(block);
 			
 			return block;
 		}

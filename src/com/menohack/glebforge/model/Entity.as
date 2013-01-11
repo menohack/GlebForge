@@ -1,5 +1,8 @@
 package com.menohack.glebforge.model 
 {
+	import com.menohack.glebforge.view.RenderComponent;
+	import flash.utils.getQualifiedClassName;
+	import flash.utils.getDefinitionByName;
 	/**
 	 * ...
 	 * @author James Doverspike
@@ -13,43 +16,67 @@ package com.menohack.glebforge.model
 			components = new Vector.<Component>();
 		}
 		
-		protected function addComponent(c:Component):void
+		/**
+		 * Adds a component to an entity as long as the entity has no components of this type.
+		 * @param	component The component to add
+		 * @return
+		 */
+		protected function AddComponent(component:Component):Boolean
 		{
-			components.push(c);
+			if (HasComponent(GetClass(component)))
+				return false;
+				
+			components.push(component);
+			return true;
 		}
 		
-		protected function getComponent(name:String):Component
+		protected function RemoveComponent(component:Component):Boolean
 		{
-			for each (var derp:Component in components)
-				if (derp.name == name)
-					return derp;
+			if (!HasComponent(GetClass(component)))
+				return false;
+				
+			throw "Not done";
+		}
+		
+		/**
+		 * Gets a component from an entity, if it exists.
+		 * @param	component The component for which to search.
+		 * @return Returns the first component with the same type.
+		 */
+		protected function GetComponent(component:Class):Component
+		{
+			//We should check that component is a derived class of Component, not sure how.
+			
+			for each (var c:Component in components)
+				if (c is component)
+					return c;
 			return null;
 		}
 		
-	}
-
-}
-
-	//Component-based option one:
-	/*
-	public class Player extends Entity
-	{
-
-		public function Player()
+		/**
+		 * Searches for one instance of a given component.
+		 * @param	component The component for which to search.
+		 * @return Returns true if the component was found, false otherwise.
+		 */
+		protected function HasComponent(component:Class):Boolean
 		{
-			addComponent(Component(new PrintCrapComponent()));
-			addComponent(Component(new PrintShitComponent()));
+			//We should check that component is a derived class of Component, not sure how.
+				
+			for each (var c:Component in components)
+				if (c is component)
+					return true;
+					
+			return false;
 		}
 		
-		public function play():void
+		/**
+		 * Gets the Class of an object.
+		 * @param	object The object.
+		 * @return Returns the class of the object.
+		 */
+		public static function GetClass(object:Object):Class
 		{
-			var derp:PrintShitComponent = getComponent("PrintShitComponent") as PrintShitComponent;
-			if (derp != null)
-				derp.print();
-			
-			var herp:PrintCrapComponent = getComponent("PrintCrapComponent") as PrintCrapComponent;
-			if (herp != null)
-				herp.doit();
+			return Class(getDefinitionByName(getQualifiedClassName(object)));
 		}
 	}
-	*/
+}

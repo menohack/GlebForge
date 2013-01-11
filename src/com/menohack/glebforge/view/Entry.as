@@ -1,24 +1,15 @@
 package com.menohack.glebforge.view
 {
 	import com.menohack.glebforge.controller.Controller;
-	import com.menohack.glebforge.controller.Input;
+	import com.menohack.glebforge.model.Entity;
 	import com.menohack.glebforge.model.Game;
 	import com.menohack.glebforge.model.Model;
-	import com.menohack.glebforge.model.Test;
-	import com.menohack.glebforge.model.TestModel;
-	
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
-	import flash.geom.Rectangle;
-	import flash.geom.Point;
-	import flash.utils.getTimer;
-	import flash.geom.Vector3D;
-	import flash.ui.Mouse;
-	import flash.ui.Keyboard;
+	import flash.display.StageScaleMode;
+	
 	
 	/**
 	 * ...
@@ -32,8 +23,10 @@ package com.menohack.glebforge.view
 		private var view:View;
 		
 		public function Entry():void 
-		{
+		{			
 			var testing:Boolean = false;
+			
+			var entity:Entity = new Entity();
 			
 			if (testing)
 			{
@@ -75,7 +68,7 @@ package com.menohack.glebforge.view
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
 			game = new Game(stage);
-			view = new UI(game, stage);
+			view = new Display(game, stage);
 			game.SetView(view);
 			controller = game.GetController();
 			
@@ -91,6 +84,8 @@ package com.menohack.glebforge.view
 			stage.addEventListener(MouseEvent.RIGHT_CLICK, function(e:Event):void { } );
 			
 			stage.frameRate = 120;
+			//s.displayState = "fullScreen";
+			stage.scaleMode = StageScaleMode.EXACT_FIT;
 			
 			
 			

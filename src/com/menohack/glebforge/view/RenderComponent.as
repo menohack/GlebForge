@@ -1,59 +1,50 @@
 package com.menohack.glebforge.view 
 {
-	import com.menohack.glebforge.model.Game;
+	import com.menohack.glebforge.model.Component;
 	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.display.Loader;
-	import flash.display.LoaderInfo;
 	import flash.display.Sprite;
-	import flash.events.Event;
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
-	import flash.net.URLRequest;
+	import com.menohack.glebforge.model.World;
 	
 	/**
 	 * ...
 	 * @author James Doverspike
 	 */
-	public class RenderComponent extends Sprite
+	public class RenderComponent extends Component
 	{
-		//private var bitmapData:BitmapData;
-		
-		//private var bitmap:Bitmap;
-		
 		private var camera:Camera;
-		
-		//private var shape:Rectangle;
-		
-		//public var position:Point;
+
+		private var sprite:Sprite;
 		
 		public function RenderComponent() 
 		{
-			this.visible = true;
+			super("RenderComponent");
+			World.GetInstance().AddRenderComponent(this);
+			
+			this.sprite = new Sprite();
 		}
-		
-		public function set Camera(camera:Camera):void
-		{
-			this.camera = camera;
-			camera.addChild(this);
-			//position = new Point(0, 0);
-		}
-		
-		/*
-		public function load(filename:String):void
-		{
-			//TODO: Error checking on the filename
-			var loader:Loader = new Loader();
-			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onComplete);
-			loader.load(new URLRequest(filename));
-		}
-		*/
 		
 		public function set Bitmap(bitmap:Bitmap):void
 		{	
-			addChild(bitmap);
-			//this.bitmap = bitmap;
-			//this.bitmapData = bitmap.bitmapData;
+			if (sprite.numChildren > 0)
+				sprite.removeChildren(0, sprite.numChildren-1);
+			sprite.addChild(bitmap);
+		}
+		
+		public function GetSprite():Sprite
+		{
+			return sprite;
+		}
+		
+		public function set Position(position:Point):void
+		{
+			sprite.x = position.x;
+			sprite.y = position.y;
+		}
+		
+		public function get Position():Point
+		{
+			return new Point(sprite.x, sprite.y);
 		}
 		
 		/*
@@ -66,32 +57,13 @@ package com.menohack.glebforge.view
 			shape = new Rectangle(0, 0, bitmap.width, bitmap.height);
 			position = new Point(0, 0);
 		}
-		*/
-		
-		public function set Position(position:Point):void
+		public function load(filename:String):void
 		{
-			//this.position = position;
-			setPosition(position.x, position.y);
+			//TODO: Error checking on the filename
+			var loader:Loader = new Loader();
+			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onComplete);
+			loader.load(new URLRequest(filename));
 		}
-		
-		public function setPosition(x:uint, y:uint):void
-		{
-			this.x = x;
-			this.y = y;
-		}
-		
-		/*
-		public function draw():void
-		{
-			if (bitmap == null || camera == null)
-				return;
-			if (shape == null)
-				shape = new Rectangle(0, 0, bitmap.width, bitmap.height);	
-				
-			camera.draw(bitmapData, position);
-		}
-		*/
-		
+		*/	
 	}
-
 }

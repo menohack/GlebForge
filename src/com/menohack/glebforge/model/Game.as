@@ -4,27 +4,15 @@ package com.menohack.glebforge.model
 	import com.menohack.glebforge.controller.Input;
 	import com.menohack.glebforge.model.network.NetworkAdapter;
 	import com.menohack.glebforge.model.network.NetworkComponent;
+	import com.menohack.glebforge.view.Camera;
 	import com.menohack.glebforge.view.RenderComponent;
-	import com.menohack.glebforge.view.UI;
 	import com.menohack.glebforge.view.View;
 	import flash.display.Bitmap;
-	import flash.display.BitmapData;
 	import flash.display.Sprite;
-	import flash.display.StageDisplayState;
-	import flash.display.StageScaleMode;
-	import flash.events.Event;
-	import flash.events.KeyboardEvent;
-	import flash.events.MouseEvent;
-	import flash.geom.Rectangle;
+	import flash.display.Stage;
 	import flash.geom.Point;
 	import flash.geom.Vector3D;
-	import flash.utils.getTimer;
-	import flash.ui.Mouse;
-	import flash.ui.Keyboard;
-	import flash.display.Stage;
-	import flash.utils.Timer;
 	
-	import com.menohack.glebforge.view.Camera;
 
 	
 	/**
@@ -35,14 +23,7 @@ package com.menohack.glebforge.model
 	{
 		[Embed(source="../../../../../lib/shittybarracks.png")]
 		private var barracksImage:Class;
-		
-		[Embed(source = "../../../../../lib/tileSelector.png")]
-		private var tileSelector:Class;
-		
 
-		
-		private var selector:Bitmap;
-		
 		private var barracks:Bitmap;
 		
 		//private var time:uint = 0;
@@ -57,7 +38,7 @@ package com.menohack.glebforge.model
 		
 		private var camera:Camera;
 		
-		private var stage:Stage;
+		//private var stage:Stage;
 		
 		private var map:Map;
 		
@@ -71,12 +52,7 @@ package com.menohack.glebforge.model
 		public var player1:Player;
 		
 		
-		private var controller:Controller;
-		
-		
-		private var fullscreen:Boolean = false;
-		
-		public var ui:View;
+		public var display:View;
 		
 		private var input:Input;
 		
@@ -88,32 +64,12 @@ package com.menohack.glebforge.model
 		{
 			input = new Input();
 			
-			stage = s;
-			//s.displayState = "fullScreen";
-			stage.scaleMode = StageScaleMode.EXACT_FIT;
-			
-			selector = new tileSelector();
-			
-			/*
-			camera = new Camera(stage.stageWidth, stage.stageHeight);
-			stage.addChild(camera);
-			*/
-			//this.camera = camera;
-			
-			/*
 			map = new Map(camera);
 			for (var bx:int = -5; bx < 5; bx++)
 				for (var by:int = -5; by < 5; by++)
 					map.addBlock(bx, by);
-			*/
-			barracks = new barracksImage();
-			position.x = stage.stageWidth / 2 - barracks.width/2;
-			position.y = stage.stageHeight / 2 - barracks.height / 2;
-			barracks.x = position.x;
-			barracks.y = position.y;
-			end = position;
 			
-			player1 = new Player(barracks.x + 200, barracks.y, camera);
+			
 			/*
 			peasant = new peasantImage();
 			peasant.x = barracks.x + 200;
@@ -143,19 +99,25 @@ package com.menohack.glebforge.model
 			networkComponent = new NetworkComponent(networkAdapter, ip, 11000);
 			
 			new Music();
+		}
+		
+		private function DoStuff():void
+		{
+			barracks = new barracksImage();
+			position.x = display.Width / 2 - barracks.width/2;
+			position.y = display.Height / 2 - barracks.height / 2;
+			barracks.x = position.x;
+			barracks.y = position.y;
+			end = position;
 			
-			//this.ui = ui;
-			//ui = new UI(stage);
-			
-			
-			
-			camera.addChild(otherSprites);
+			player1 = new Player(barracks.x + 200, barracks.y, camera);
 		}
 		
 		public function SetView(view:View):void
 		{
-			ui = view;
+			display = view;
 			input.view = view;
+			DoStuff();
 		}
 		
 		public function GetController():Controller
@@ -209,7 +171,7 @@ package com.menohack.glebforge.model
 			
 			player1.update(delta);
 			
-			input.Update(camera, fullscreen, stage, delta);
+			input.Update(camera, delta);
 			
 			//time = newTime;
 		}
@@ -256,9 +218,11 @@ package com.menohack.glebforge.model
 		 */
 		public function GetSprites():Vector.<Sprite>
 		{
-			var sprites:Vector.<Sprite> = new Vector.<Sprite>(10);
-			sprites[0] = new Sprite();
-			
+			trace(World.GetInstance().RenderComponents.length);
+			var sprites:Vector.<Sprite> = new Vector.<Sprite>();
+			for each (var r:RenderComponent in World.GetInstance().RenderComponents)
+				sprites.push(r.GetSprite());
+
 			return sprites;
 		}
 		

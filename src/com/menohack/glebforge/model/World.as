@@ -1,5 +1,6 @@
 package com.menohack.glebforge.model 
 {
+	import com.menohack.glebforge.view.RenderComponent;
 	import flash.utils.Dictionary;
 	/**
 	 * ...
@@ -11,9 +12,13 @@ package com.menohack.glebforge.model
 		
 		private var players:Dictionary;
 		
+		private var renderComponents:Vector.<RenderComponent>;
+		
 		public function World(e:SingletonEnforcer) 
 		{
 			players = new Dictionary();
+			
+			renderComponents = new Vector.<RenderComponent>();
 		}
 		
 		public static function GetInstance():World
@@ -24,10 +29,16 @@ package com.menohack.glebforge.model
 			return instance;
 		}
 		
-		public function AddPlayer(player:Player):void
+		public function get RenderComponents():Vector.<RenderComponent>
 		{
-			players["fuck"] = player;
+			return renderComponents;
 		}
+		
+		public function AddRenderComponent(renderComponent:RenderComponent):void
+		{
+			renderComponents.push(renderComponent);
+		}
+		
 	}
 
 }
