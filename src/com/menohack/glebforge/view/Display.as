@@ -1,60 +1,81 @@
 package com.menohack.glebforge.view 
 {
-	import com.menohack.glebforge.model.Map;
 	import com.menohack.glebforge.model.Model;
-	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.display.StageDisplayState;
 	import flash.events.Event;
-	import flash.events.MouseEvent;
 	import flash.geom.Point;
-	import flash.ui.Mouse;
 	
 	/**
-	 * ...
+	 * The Display class handles rendering and encapsulates the View of the MVC design pattern.
+	 * Sprites are requested from the model by GetSprites() and rendered, then the user interface
+	 * elements like the cursor and buttons are rendered. This should be the only class that has
+	 * access to the Stage.
+	 * 
+	 * @todo Extract the Select Area functionality into the cursor and simplify the View methods
+	 * to draw it.
+	 * 
 	 * @author James Doverspike
 	 */
 	public class Display implements View
 	{
-		private var render:RenderComponent;
-		
+		/**
+		 * The cursor object.
+		 */
 		private var cursor:Cursor;
 		
+		/**
+		 * The user interface: such as menus and buttons.
+		 */
 		private var ui:UI;
 		
+		/**
+		 * The current camera.
+		 */
 		public var camera:Camera;
 		
+		/**
+		 * A reference to the stage object.
+		 */
 		private var stage:Stage;
 		
+		/**
+		 * The model of the game logic.
+		 */
 		private var model:Model;
 		
+		/**
+		 * The last date that the Update function was called.
+		 */
 		private var lastTime:Date;
 		
-		//This sprite contains all elements of the GUI
-		private var sprite:Sprite;
+		/**
+		 * Whether the game is fullscreen or windowed.
+		 */
+		private var fullscreen:Boolean = false;
 		
+		/**
+		 * Default constructor.
+		 * @param	model
+		 * @param	stage
+		 */
 		public function Display(model:Model, stage:Stage) 
 		{
 			this.model = model;
 			this.stage = stage;
+			
+			//Set the first time
 			lastTime = new Date();
 			
-			sprite = new Sprite();
-			
-			
-			camera = new Camera(Width, Height);
-			stage.addChild(camera);
-			
-			
+			camera = new Camera(Width, Height);		
 			
 			ui = new UI();
 			
 			cursor = new Cursor(stage.addEventListener);
-			
-			
-			stage.addChild(sprite);
 		}
+		
+		//TODO: Refactor the following three methods
 		
 		public function StartDrawingSelectArea(start:Point):void
 		{
@@ -71,6 +92,12 @@ package com.menohack.glebforge.view
 			cursor.StopDrawingSelectArea();
 		}
 		
+		/**
+		 * The Update method is called once per frame by the ActionScript runtime. All rendering
+		 * should take place here. The method expects to receive the sprites that should be
+		 * rendered from the game in order by the GetSprites() method.
+		 * @param	e The ENTER_FRAME event.
+		 */
 		public function Update(e:Event):void
 		{
 			//Update the time and compute the delta in milliseconds since the last update
@@ -98,29 +125,46 @@ package com.menohack.glebforge.view
 				stage.addChild(ui.Image);
 		}
 		
-		
+		/**
+		 * Gets the width of the stage.
+		 * @return The width of the stage.
+		 */
 		public function get Width():uint
 		{
 			return stage.stageWidth;
 		}
 		
+		/**
+		 * Sets the width of the stage.
+		 * @param	width The new width.
+		 */
 		public function set Width(width:uint):void
 		{
 			stage.stageWidth = width;
 		}
 		
+		/**
+		 * Gets the height of the stage.
+		 * @return The height of the stage.
+		 */
 		public function get Height():uint
 		{
 			return stage.stageHeight;
 		}
 		
+		/**
+		 * Sets the height of the stage.
+		 * @param 	height The new height.
+		 */
 		public function set Height(height:uint):void
 		{
 			stage.stageHeight = height;
 		}
 		
-		private var fullscreen:Boolean = false;
-		
+		/**
+		 * Sets the fullscreen state of the game.
+		 * @param	fullscreen True if fullscreen, false if windowed.
+		 */
 		public function set Fullscreen(fullscreen:Boolean):void
 		{
 			if (this.fullscreen == fullscreen)
@@ -138,26 +182,46 @@ package com.menohack.glebforge.view
 			}
 		}
 		
+		/**
+		 * Gets whether the game is in fullscreen mode.
+		 * @return True if the game is fullscreen, false if it is windowed.
+		 */
 		public function get Fullscreen():Boolean
 		{
 			return fullscreen;
 		}
 		
+		/**
+		 * Moves the camera up for delta seconds
+		 * @param	delta The number of seconds to move upwards.
+		 */
 		public function moveUp(delta:Number):void
 		{
 			camera.moveUp(delta);
 		}
 		
+		/**
+		 * Moves the camera down for delta seconds
+		 * @param	delta The number of seconds to move downwards.
+		 */
 		public function moveDown(delta:Number):void
 		{
 			camera.moveDown(delta);
 		}
 		
+		/**
+		 * Moves the camera left for delta seconds
+		 * @param	delta The number of seconds to move leftwards.
+		 */
 		public function moveLeft(delta:Number):void
 		{
 			camera.moveLeft(delta);
 		}
 		
+		/**
+		 * Moves the camera right for delta seconds
+		 * @param	delta The number of seconds to move rightwards.
+		 */
 		public function moveRight(delta:Number):void
 		{
 			camera.moveRight(delta);

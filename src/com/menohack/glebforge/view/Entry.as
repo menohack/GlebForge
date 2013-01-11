@@ -5,10 +5,10 @@ package com.menohack.glebforge.view
 	import com.menohack.glebforge.model.Game;
 	import com.menohack.glebforge.model.Model;
 	import flash.display.Sprite;
+	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
-	import flash.display.StageScaleMode;
 	
 	
 	/**
@@ -67,7 +67,7 @@ package com.menohack.glebforge.view
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
-			game = new Game(stage);
+			game = new Game();
 			view = new Display(game, stage);
 			game.SetView(view);
 			controller = game.GetController();

@@ -25,7 +25,7 @@ package com.menohack.glebforge.model
 		
 		private var testSpeed:Number = 300.0;
 		
-		public function Player(x:int, y:int, camera:Camera)
+		public function Player(x:int, y:int)
 		{
 			peasantDirection.x = 0;
 			peasantDirection.y = 0;

@@ -11,22 +11,49 @@ package com.menohack.glebforge.controller
 	import flash.geom.Point;
 	
 	/**
-	 * ...
+	 * The Input class implements the Controller part of the MVC pattern. The Controller
+	 * is part of the Model. The ActionScript runtime raises events for mouse and keyboard
+	 * input, making this class completely event-driven.
+	 * 
 	 * @author James Doverspike
 	 */
 	public class Input implements Controller
 	{
-		//Whether each key is being held down, could change to time since last press
+		/**
+		 * Whether each key is being held down, could change to time since last press.
+		 */
 		private var keys:Vector.<Boolean> = new Vector.<Boolean>(256);
 		
+		/**
+		 * The position of the mouse.
+		 */
 		private var mousePosition:Point = new Point();
 		
-		public var view:View;
+		/**
+		 * The view.
+		 */
+		private var view:View;
 		
+		/**
+		 * Default constructor.
+		 */
 		public function Input() 
 		{
 		}
 		
+		/**
+		 * Sets the view.
+		 * @param	view The new view.
+		 */
+		public function SetView(view:View):void
+		{
+			this.view = view;
+		}
+		
+		/**
+		 * Invoked by the ActionScript runtime when a key is depressed.
+		 * @param	e The KeyboardEvent of the key press.
+		 */
 		public function onKeyDown(e:KeyboardEvent):void
 		{			
 			var key:uint = e.keyCode;
@@ -46,18 +73,30 @@ package com.menohack.glebforge.controller
 			}
 		}
 		
+		/**
+		 * Invoked by the ActionScript runtime when a key is released.
+		 * @param	e The KeyboardEvent of the key release.
+		 */
 		public function onKeyUp(e:KeyboardEvent):void
 		{
 			var key:uint = e.keyCode;
 			keys[key] = false;
 		}
 		
+		/**
+		 * Invoked by the ActionScript runtime when a mouse button is depressed.
+		 * @param	e The MouseEvent of the key press.
+		 */
 		public function onMouseDown(e:MouseEvent):void
 		{
 			//end = new Vector3D(e.stageX - camera.bitmap.x, e.stageY - camera.bitmap.y, 0);
 			view.StartDrawingSelectArea(new Point(e.stageX, e.stageY));
 		}
 		
+		/**
+		 * Invoked by the ActionScript runtime when a mouse button is released.
+		 * @param	e The MouseEvent of the button release.
+		 */
 		public function onMouseUp(e:MouseEvent):void
 		{
 			//end = new Vector3D(e.stageX - camera.bitmap.x, e.stageY - camera.bitmap.y, 0);
@@ -65,6 +104,10 @@ package com.menohack.glebforge.controller
 			
 		}
 		
+		/**
+		 * Invoked by the ActionScript runtime when the mouse moves.
+		 * @param	e The MouseEvent of the mouse move.
+		 */
 		public function onMouseMove(e:MouseEvent):void
 		{
 			mousePosition.x = e.stageX;
@@ -73,7 +116,11 @@ package com.menohack.glebforge.controller
 			view.DrawSelectArea(new Point(e.stageX, e.stageY));
 		}
 		
-		public function Update(camera:Camera, delta:uint):void
+		/**
+		 * Updates the Controller.
+		 * @param	delta The change in milliseconds since the last update.
+		 */
+		public function Update(delta:Number):void
 		{
 			//Consider locking the camera in place when we are drawing the selection box. Wrap these if statements
 			//in another if and ask the UI if we are drawing.

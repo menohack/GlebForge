@@ -26,15 +26,12 @@ package com.menohack.glebforge.model
 		
 		public static var BLOCK_DIM:uint = 32;
 		
-		public function Map(camera:Camera) 
+		public function Map() 
 		{
 			var render:RenderComponent = new RenderComponent();
 			AddComponent(render);
 			
 			blocks = new Vector.<Block>();
-			//var render:RenderComponent = new RenderComponent();
-			//AddComponent(render);
-			//render.Bitmap = makeBlock(0, 0);
 		}
 		
 		public function addBlock(x:int, y:int):Boolean

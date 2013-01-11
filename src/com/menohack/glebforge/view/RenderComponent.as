@@ -7,7 +7,14 @@ package com.menohack.glebforge.view
 	import com.menohack.glebforge.model.World;
 	
 	/**
-	 * ...
+	 * The RenderComponent class is added to any Entity that needs to be rendered.
+	 * On creation it automatically adds itself to the World's list of other
+	 * components. Entities are queued for drawing by adding a RenderComponent and
+	 * adding a bitmap or sprite to the RenderComponent.
+	 * 
+	 * This class will asynchronously load bitmaps in the future to decrease
+	 * the size of the executable.
+	 * 
 	 * @author James Doverspike
 	 */
 	public class RenderComponent extends Component
