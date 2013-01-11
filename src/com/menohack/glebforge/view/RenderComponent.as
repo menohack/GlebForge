@@ -26,18 +26,19 @@ package com.menohack.glebforge.view
 		public function RenderComponent() 
 		{
 			super("RenderComponent");
-			World.GetInstance().AddRenderComponent(this);
 			
 			this.sprite = new Sprite();
+			
+			World.GetInstance().AddRenderComponent(this);
 		}
-		
+		/*
 		public function set Bitmap(bitmap:Bitmap):void
 		{	
 			if (sprite.numChildren > 0)
 				sprite.removeChildren(0, sprite.numChildren-1);
 			sprite.addChild(bitmap);
 		}
-		
+		*/
 		public function GetSprite():Sprite
 		{
 			return sprite;

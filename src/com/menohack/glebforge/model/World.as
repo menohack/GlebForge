@@ -21,6 +21,10 @@ package com.menohack.glebforge.model
 			renderComponents = new Vector.<RenderComponent>();
 		}
 		
+		/**
+		 * Gets the static instance of the World.
+		 * @return The instance of the World.
+		 */
 		public static function GetInstance():World
 		{
 			if (instance == null)
@@ -43,6 +47,8 @@ package com.menohack.glebforge.model
 
 }
 
-//Used to keep the contructor from being called externally. It can
-//only be called in this file.
+/**
+ * Used to keep the contructor from being called externally. It can
+ * only be called in this file.
+ */
 class SingletonEnforcer{}

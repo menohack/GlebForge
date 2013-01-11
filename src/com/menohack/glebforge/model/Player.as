@@ -32,9 +32,8 @@ package com.menohack.glebforge.model
 			
 			var render:RenderComponent = new RenderComponent();
 			AddComponent(render);
-			//render.Camera = camera;
 			var peasant:Bitmap = new peasantImage();
-			render.Bitmap = peasant;
+			render.GetSprite().addChild(peasant);
 			
 			position = new Point();
 			position.x = x;

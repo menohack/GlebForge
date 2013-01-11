@@ -53,6 +53,7 @@ package com.menohack.glebforge.model
 		{
 			input = new Input();
 			
+			//Make a 10x10 block map, centered at (0,0)
 			map = new Map();
 			for (var bx:int = -5; bx < 5; bx++)
 				for (var by:int = -5; by < 5; by++)

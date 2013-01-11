@@ -1,6 +1,5 @@
 package com.menohack.glebforge.model 
 {
-	import com.menohack.glebforge.view.Camera;
 	import com.menohack.glebforge.view.RenderComponent;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -34,16 +33,17 @@ package com.menohack.glebforge.model
 			blocks = new Vector.<Block>();
 		}
 		
+		/**
+		 * Attempts to add a block at the specified slot.
+		 * @param	x The x slot.
+		 * @param	y The y slot.
+		 * @return True if the block was added, false otherwise.
+		 */
 		public function addBlock(x:int, y:int):Boolean
 		{
 			var block:Bitmap = makeBlock(x, y);
-			if (block != null)
-			{
-				(GetComponent(RenderComponent) as RenderComponent).Bitmap = block;
-				return true;
-			}
-			else
-				return false;
+			
+			return block != null;
 		}
 		
 		private function loadTiles():void

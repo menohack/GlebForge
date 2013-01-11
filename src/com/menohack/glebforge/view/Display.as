@@ -65,7 +65,6 @@ package com.menohack.glebforge.view
 			this.model = model;
 			this.stage = stage;
 			
-			//Set the first time
 			lastTime = new Date();
 			
 			camera = new Camera(Width, Height);		
