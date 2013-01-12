@@ -34,7 +34,7 @@ package com.menohack.glebforge.model
 		/**
 		 * The current player.
 		 */
-		public var player1:Player;	
+		public var players:Vector.<Player>
 		
 		/**
 		 * The View object.
@@ -53,6 +53,7 @@ package com.menohack.glebforge.model
 		 */
 		public function Game() 
 		{
+			players = new Vector.<Player>();
 			selectArea = new SelectArea();
 			input = new Input(selectArea, Attack);
 			
@@ -75,15 +76,17 @@ package com.menohack.glebforge.model
 			
 			new Music();
 		}
-		
+		private var player2:Player;
+		private var player3:Player;
 		/**
 		 * Temporary until I come up with a better solution. Need the view to do
 		 * this stuff but the view needs the model for contruction.
 		 */
 		private function DoStuff():void
 		{
-			player1 = new Player(display.Width / 2 + 200, display.Height / 2);
-			var player2:Player = new Player(display.Width / 2, display.Height / 2 - 100);
+			players.push(new Player(display.Width / 2 + 200, display.Height / 2));
+			players.push(new Player(display.Width / 2, display.Height / 2 - 100));
+			players.push(new Player(display.Width / 2, display.Height / 2 - 200));
 		}
 		
 		/**
@@ -126,8 +129,9 @@ package com.menohack.glebforge.model
 		 * @param	delta The time in milliseconds since the last update.
 		 */
 		public function Update(delta:Number):void
-		{			
-			player1.Update(delta);
+		{
+			for each(var player:Player in players)
+				player.Update(delta);
 			
 			input.Update(delta);
 		}
