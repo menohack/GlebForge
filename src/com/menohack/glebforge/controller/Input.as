@@ -35,14 +35,20 @@ package com.menohack.glebforge.controller
 		 */
 		private var view:View;
 		
+		/**
+		 * The object describing user selection with the mouse.
+		 */
 		private var selectArea:SelectArea;
+		
+		private var rightClick:Function;
 		
 		/**
 		 * Default constructor.
 		 */
-		public function Input(selectArea:SelectArea) 
+		public function Input(selectArea:SelectArea, rightClick:Function) 
 		{
 			this.selectArea = selectArea;
+			this.rightClick = rightClick;
 		}
 		
 		/**
@@ -88,8 +94,8 @@ package com.menohack.glebforge.controller
 		}
 		
 		/**
-		 * Invoked by the ActionScript runtime when a mouse button is depressed.
-		 * @param	e The MouseEvent of the key press.
+		 * Invoked by the ActionScript runtime when the left mouse button is depressed.
+		 * @param	e The MouseEvent of the button press.
 		 */
 		public function onMouseDown(e:MouseEvent):void
 		{
@@ -98,13 +104,31 @@ package com.menohack.glebforge.controller
 		}
 		
 		/**
-		 * Invoked by the ActionScript runtime when a mouse button is released.
+		 * Invoked by the ActionScript runtime when the left mouse button is released.
 		 * @param	e The MouseEvent of the button release.
 		 */
 		public function onMouseUp(e:MouseEvent):void
 		{
 			view.StopDrawingSelectArea();
 			selectArea.Select();
+		}
+		
+		/**
+		 * Invoked by the ActionScript runtime when the right mouse button is depressed.
+		 * @param	e The MouseEvent of the button press.
+		 */
+		public function onRightMouseDown(e:MouseEvent):void
+		{
+			rightClick(new Point(e.localX, e.localY));
+		}
+		
+		/**
+		 * Invoked by the ActionScript runtime when the right mouse button is released.
+		 * @param	e The MouseEvent of the button release.
+		 */
+		public function onRightMouseUp(e:MouseEvent):void
+		{
+			
 		}
 		
 		/**

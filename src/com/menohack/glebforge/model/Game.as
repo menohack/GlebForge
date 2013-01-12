@@ -54,7 +54,7 @@ package com.menohack.glebforge.model
 		public function Game() 
 		{
 			selectArea = new SelectArea();
-			input = new Input(selectArea);
+			input = new Input(selectArea, Attack);
 			
 			//Make a 10x10 block map, centered at (0,0)
 			map = new Map();
@@ -98,6 +98,21 @@ package com.menohack.glebforge.model
 		}
 		
 		/**
+		 * The callback function for a right-click on the Map.
+		 * @param	point The position of the click.
+		 */
+		private function Attack(point:Point):void
+		{
+			for each(var s:SelectableComponent in World.GetInstance().SelectableComponents)
+			{
+				var rc:RenderComponent = s.Parent.GetComponent(RenderComponent) as RenderComponent;
+				var pc:PathingComponent = s.Parent.GetComponent(PathingComponent) as PathingComponent;
+				if (s.Selected && rc != null && pc != null)
+					pc.MoveTo(point);
+			}
+		}
+		
+		/**
 		 * Gets the Controller from the Model.
 		 * @return The Controller.
 		 */
@@ -112,7 +127,7 @@ package com.menohack.glebforge.model
 		 */
 		public function Update(delta:Number):void
 		{			
-			player1.update(delta);
+			player1.Update(delta);
 			
 			input.Update(delta);
 		}

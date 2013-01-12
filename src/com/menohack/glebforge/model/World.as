@@ -14,10 +14,13 @@ package com.menohack.glebforge.model
 		
 		private var selectableComponents:Vector.<SelectableComponent>;
 		
+		private var pathingComponents:Vector.<PathingComponent>;
+		
 		public function World(e:SingletonEnforcer) 
 		{
 			renderComponents = new Vector.<RenderComponent>();
 			selectableComponents = new Vector.<SelectableComponent>();
+			pathingComponents = new Vector.<PathingComponent>();
 		}
 		
 		/**
@@ -50,6 +53,16 @@ package com.menohack.glebforge.model
 		public function AddSelectableComponent(selectableComponent:SelectableComponent):void
 		{
 			selectableComponents.push(selectableComponent);
+		}
+		
+		public function get PathingComponents():Vector.<PathingComponent>
+		{
+			return pathingComponents;
+		}
+		
+		public function AddPathingComponent(pathingComponent:PathingComponent):void
+		{
+			pathingComponents.push(pathingComponent);
 		}
 	}
 

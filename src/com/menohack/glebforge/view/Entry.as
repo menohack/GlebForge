@@ -81,8 +81,9 @@ package com.menohack.glebforge.view
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, controller.onKeyDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP, controller.onKeyUp);
 			
-			//Disable right click
-			stage.addEventListener(MouseEvent.RIGHT_CLICK, function(e:Event):void { } );
+			view.GetCamera().addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, controller.onRightMouseDown);
+			view.GetCamera().addEventListener(MouseEvent.RIGHT_MOUSE_UP, controller.onRightMouseUp);
+			stage.addEventListener(MouseEvent.RIGHT_CLICK, function():void { } );
 			
 			stage.frameRate = 120;
 			//s.displayState = "fullScreen";

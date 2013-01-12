@@ -43,6 +43,10 @@ package com.menohack.glebforge.model
 			AddComponent(select);
 			select.Position = position;
 			
+			var pathing:PathingComponent = new PathingComponent(this);
+			AddComponent(pathing);
+			pathing.Position = position;
+			
 			/*
 			var randomWalkTimer:Timer = new Timer(1000);
 			randomWalkTimer.addEventListener(TimerEvent.TIMER, changeRandWalkDir)
@@ -50,20 +54,29 @@ package com.menohack.glebforge.model
 			*/
 		}
 		
-		public function update(delta:Number):void
+		public function Update(delta:Number):void
 		{
 			//random walk AI logic, every second the direction changes
+			/*
 			peasantDirection.normalize();
 			peasantDirection.scaleBy(testSpeed / 10 * delta / 1000);
 			var render:RenderComponent = GetComponent(RenderComponent) as RenderComponent;
 			render.Position = new Point(position.x + peasantDirection.x, position.y + peasantDirection.y);
+			*/
+			
+			var render:RenderComponent = GetComponent(RenderComponent) as RenderComponent;
+			var pc:PathingComponent = GetComponent(PathingComponent) as PathingComponent;
+			pc.Update(delta);
+			render.Position = pc.Position;
 		}
 		
+		/*
 		private function changeRandWalkDir(event:TimerEvent):void //changes the random walk direction when timer goes off
 		{
 			peasantDirection.x = Math.sin(Math.random()*360);
 			peasantDirection.y = Math.sin(Math.random()*360);
 		}
+		*/
 	}
 
 }

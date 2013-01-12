@@ -17,6 +17,9 @@ package com.menohack.glebforge.controller
 		function onMouseDown(e:MouseEvent):void;
 		function onMouseUp(e:MouseEvent):void;
 		function onMouseMove(e:MouseEvent):void;
+		function onRightMouseDown(e:MouseEvent):void;
+		function onRightMouseUp(e:MouseEvent):void;
+		
 		function SetView(view:View):void;
 		function Update(delta:Number):void;
 	}
