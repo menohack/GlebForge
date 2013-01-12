@@ -19,10 +19,6 @@ package com.menohack.glebforge.view
 	 */
 	public class Camera extends Sprite
 	{
-		public var bitmapData:BitmapData;
-		
-		public var bitmap:Bitmap;
-		
 		private var shape:Rectangle;
 		
 		private var mapShape:Rectangle;
@@ -31,25 +27,9 @@ package com.menohack.glebforge.view
 		
 		public function Camera(width:uint, height:uint)
 		{
-			//bitmapData = new BitmapData(width, height);
-			//bitmap = new Bitmap(bitmapData);
-			
 			shape = new Rectangle(0, 0, width, height);
 			
-			addEventListener(MouseEvent.CLICK, derp);
-			mouseChildren = true;
-		}
-		
-		public function derp(e:MouseEvent):void
-		{
-			trace("Camera space was clicked");
-		}
-		
-		
-		public function draw(renderData:BitmapData, renderPosition:Point):void
-		{
-			//NOTE: This only works for the map, needs to be rewritten
-			//bitmapData.copyPixels(renderData, new Rectangle(shape.x, shape.y, shape.x + shape.width, shape.y + shape.height), renderPosition, null, null, true);
+			mouseChildren = false;
 		}
 		
 		public function moveUp(delta:Number):void

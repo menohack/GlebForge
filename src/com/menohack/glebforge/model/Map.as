@@ -27,7 +27,7 @@ package com.menohack.glebforge.model
 		
 		public function Map() 
 		{
-			var render:RenderComponent = new RenderComponent();
+			var render:RenderComponent = new RenderComponent(this);
 			AddComponent(render);
 			
 			blocks = new Vector.<Block>();

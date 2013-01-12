@@ -25,5 +25,7 @@ package com.menohack.glebforge.view
 		function moveDown(delta:Number):void;
 		function moveLeft(delta:Number):void;
 		function moveRight(delta:Number):void;
+		
+		function GetCamera():Camera;
 	}
 }

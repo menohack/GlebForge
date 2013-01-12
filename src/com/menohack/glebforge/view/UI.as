@@ -18,6 +18,12 @@ package com.menohack.glebforge.view
 			sprite = new Sprite();
 			var bitmap:Bitmap = new uiImage();
 			sprite.addChild(bitmap);
+			
+			//Setting mouseEnabled to false allows mouse events to pass
+			//through to sprites behind the UI (including transparent)
+			//TODO: Allow clicking through transparency or divide the
+			//UI into multiple sections and set mouseChildren = true
+			sprite.mouseEnabled = false;
 		}
 		
 		public function get Image():Sprite

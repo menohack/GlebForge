@@ -5,6 +5,7 @@ package com.menohack.glebforge.view
 	import flash.display.Stage;
 	import flash.display.StageDisplayState;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	
 	/**
@@ -67,7 +68,7 @@ package com.menohack.glebforge.view
 			
 			lastTime = new Date();
 			
-			camera = new Camera(Width, Height);		
+			camera = new Camera(Width, Height);
 			
 			ui = new UI();
 			
@@ -89,6 +90,15 @@ package com.menohack.glebforge.view
 		public function StopDrawingSelectArea():void
 		{
 			cursor.StopDrawingSelectArea();
+		}
+		
+		/**
+		 * Gets the current camera.
+		 * @return The current camera.
+		 */
+		public function GetCamera():Camera
+		{
+			return camera;
 		}
 		
 		/**

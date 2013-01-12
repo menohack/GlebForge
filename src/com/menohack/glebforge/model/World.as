@@ -10,15 +10,14 @@ package com.menohack.glebforge.model
 	{
 		private static var instance:World;
 		
-		private var players:Dictionary;
-		
 		private var renderComponents:Vector.<RenderComponent>;
+		
+		private var selectableComponents:Vector.<SelectableComponent>;
 		
 		public function World(e:SingletonEnforcer) 
 		{
-			players = new Dictionary();
-			
 			renderComponents = new Vector.<RenderComponent>();
+			selectableComponents = new Vector.<SelectableComponent>();
 		}
 		
 		/**
@@ -43,6 +42,15 @@ package com.menohack.glebforge.model
 			renderComponents.push(renderComponent);
 		}
 		
+		public function get SelectableComponents():Vector.<SelectableComponent>
+		{
+			return selectableComponents;
+		}
+		
+		public function AddSelectableComponent(selectableComponent:SelectableComponent):void
+		{
+			selectableComponents.push(selectableComponent);
+		}
 	}
 
 }

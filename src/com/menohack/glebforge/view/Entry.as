@@ -72,11 +72,12 @@ package com.menohack.glebforge.view
 			game.SetView(view);
 			controller = game.GetController();
 			
-			var camera:Camera;
+			//var camera:Camera;
 			
-			stage.addEventListener(MouseEvent.MOUSE_MOVE, controller.onMouseMove);
-			stage.addEventListener(MouseEvent.MOUSE_DOWN, controller.onMouseDown);
-			stage.addEventListener(MouseEvent.MOUSE_UP, controller.onMouseUp);
+			view.GetCamera().addEventListener(MouseEvent.MOUSE_MOVE, controller.onMouseMove);
+			view.GetCamera().addEventListener(MouseEvent.MOUSE_DOWN, controller.onMouseDown);
+			view.GetCamera().addEventListener(MouseEvent.MOUSE_UP, controller.onMouseUp);
+			
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, controller.onKeyDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP, controller.onKeyUp);
 			

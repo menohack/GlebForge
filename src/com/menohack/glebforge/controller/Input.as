@@ -1,6 +1,7 @@
 package com.menohack.glebforge.controller 
 {
 	import com.menohack.glebforge.model.Model;
+	import com.menohack.glebforge.model.SelectArea;
 	import com.menohack.glebforge.view.Camera;
 	import com.menohack.glebforge.view.View;
 	import flash.display.Stage;
@@ -34,11 +35,14 @@ package com.menohack.glebforge.controller
 		 */
 		private var view:View;
 		
+		private var selectArea:SelectArea;
+		
 		/**
 		 * Default constructor.
 		 */
-		public function Input() 
+		public function Input(selectArea:SelectArea) 
 		{
+			this.selectArea = selectArea;
 		}
 		
 		/**
@@ -89,7 +93,7 @@ package com.menohack.glebforge.controller
 		 */
 		public function onMouseDown(e:MouseEvent):void
 		{
-			//end = new Vector3D(e.stageX - camera.bitmap.x, e.stageY - camera.bitmap.y, 0);
+			selectArea.TopLeft = new Point(e.localX, e.localY);
 			view.StartDrawingSelectArea(new Point(e.stageX, e.stageY));
 		}
 		
@@ -99,9 +103,8 @@ package com.menohack.glebforge.controller
 		 */
 		public function onMouseUp(e:MouseEvent):void
 		{
-			//end = new Vector3D(e.stageX - camera.bitmap.x, e.stageY - camera.bitmap.y, 0);
 			view.StopDrawingSelectArea();
-			
+			selectArea.Select();
 		}
 		
 		/**
@@ -110,10 +113,13 @@ package com.menohack.glebforge.controller
 		 */
 		public function onMouseMove(e:MouseEvent):void
 		{
-			mousePosition.x = e.stageX;
-			mousePosition.y = e.stageY;
-			//drawTileSelector(e.stageX - camera.bitmap.x, e.stageY - camera.bitmap.y);
-			view.DrawSelectArea(new Point(e.stageX, e.stageY));
+			selectArea.BottomRight.x = e.localX;
+			selectArea.BottomRight.y = e.localY;
+			
+			mousePosition = new Point(e.stageX, e.stageY);
+			//trace("(" + e.localX + "," + e.localY + ")");
+			
+			view.DrawSelectArea(mousePosition);
 		}
 		
 		/**

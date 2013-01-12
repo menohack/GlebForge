@@ -6,13 +6,25 @@ package com.menohack.glebforge.model
 	 */
 	public class Component 
 	{
-		public var name:String;
+		private var name:String;
 		
-		public function Component(name:String) 
+		private var parent:Entity;
+		
+		public function Component(name:String, parent:Entity) 
 		{
 			this.name = name;
+			this.parent = parent;
 		}
 		
+		public function get Parent():Entity
+		{
+			return parent;
+		}
+		
+		public function set Parent(entity:Entity):void
+		{
+			parent = entity;
+		}
 	}
 
 }

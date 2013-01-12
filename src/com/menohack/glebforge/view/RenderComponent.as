@@ -1,7 +1,9 @@
 package com.menohack.glebforge.view 
 {
 	import com.menohack.glebforge.model.Component;
+	import com.menohack.glebforge.model.Entity;
 	import flash.display.Bitmap;
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	import com.menohack.glebforge.model.World;
@@ -22,23 +24,42 @@ package com.menohack.glebforge.view
 		private var camera:Camera;
 
 		private var sprite:Sprite;
+
+		private var selected:Boolean;
 		
-		public function RenderComponent() 
+		private var shape:Shape;
+		
+		public function RenderComponent(parent:Entity) 
 		{
-			super("RenderComponent");
+			super("RenderComponent", parent);
 			
 			this.sprite = new Sprite();
+			shape = new Shape();
+			shape.graphics.lineStyle(1, 0x00FF00);
+			selected = false;
 			
 			World.GetInstance().AddRenderComponent(this);
 		}
-		/*
-		public function set Bitmap(bitmap:Bitmap):void
-		{	
-			if (sprite.numChildren > 0)
-				sprite.removeChildren(0, sprite.numChildren-1);
-			sprite.addChild(bitmap);
+
+		public function Select():void
+		{
+			if (selected)
+				return;
+			
+			shape.graphics.drawRect(0, 0, sprite.width, sprite.height);
+			sprite.addChild(shape);
+			selected = true;
 		}
-		*/
+		
+		public function Deselect():void
+		{
+			if (!selected)
+				return;
+			
+			sprite.removeChild(shape);
+			selected = false;
+		}
+		
 		public function GetSprite():Sprite
 		{
 			return sprite;

@@ -43,7 +43,7 @@ package com.menohack.glebforge.model
 		 * @param	component The component for which to search.
 		 * @return Returns the first component with the same type.
 		 */
-		protected function GetComponent(component:Class):Component
+		public function GetComponent(component:Class):Component
 		{
 			//We should check that component is a derived class of Component, not sure how.
 			

@@ -1,27 +1,43 @@
 package com.menohack.glebforge.model 
 {
-	import com.menohack.glebforge.view.RenderComponent;
 	import flash.events.MouseEvent;
+	import flash.geom.Point;
+	
 	/**
 	 * ...
 	 * @author James Doverspike
 	 */
-	public class SelectableComponent 
+	public class SelectableComponent extends Component
 	{
-		private var render:RenderComponent;
+		private var position:Point;
 		
-		public function SelectableComponent(render:RenderComponent) 
-		{
-			this.render = render;
-			render.addEventListener(MouseEvent.CLICK, onSelect);
-		}
+		private var selected:Boolean = false;
 		
-		private function onSelect(event:MouseEvent):void
+		public function SelectableComponent(parent:Entity) 
 		{
-			
+			super("SelectableComponent", parent);
+			World.GetInstance().AddSelectableComponent(this);
 		}
 	
+		public function set Position(position:Point):void
+		{
+			this.position = position;
+		}
 		
+		public function get Position():Point
+		{
+			return position;
+		}
+	
+		public function set Selected(selected:Boolean):void
+		{
+			this.selected = selected;
+		}
+		
+		public function get Selected():Boolean
+		{
+			return selected;
+		}
 	}
 
 }

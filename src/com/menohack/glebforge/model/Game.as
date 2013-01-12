@@ -45,13 +45,16 @@ package com.menohack.glebforge.model
 		 * The Controller object.
 		 */
 		private var input:Controller;
+		
+		private var selectArea:SelectArea;
 
 		/**
 		 * Default constructor.
 		 */
 		public function Game() 
 		{
-			input = new Input();
+			selectArea = new SelectArea();
+			input = new Input(selectArea);
 			
 			//Make a 10x10 block map, centered at (0,0)
 			map = new Map();
@@ -80,6 +83,7 @@ package com.menohack.glebforge.model
 		private function DoStuff():void
 		{
 			player1 = new Player(display.Width / 2 + 200, display.Height / 2);
+			var player2:Player = new Player(display.Width / 2, display.Height / 2 - 100);
 		}
 		
 		/**
@@ -120,9 +124,21 @@ package com.menohack.glebforge.model
 		 */
 		public function GetSprites():Vector.<Sprite>
 		{
+			for each(var s:SelectableComponent in World.GetInstance().SelectableComponents)
+			{
+				//TODO: Error checking on this
+				var rc:RenderComponent = s.Parent.GetComponent(RenderComponent) as RenderComponent;
+				if (s.Selected)
+					rc.Select();
+				else
+					rc.Deselect();
+			}
+			
 			var sprites:Vector.<Sprite> = new Vector.<Sprite>();
 			for each (var r:RenderComponent in World.GetInstance().RenderComponents)
 				sprites.push(r.GetSprite());
+			
+
 
 			return sprites;
 		}

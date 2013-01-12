@@ -18,19 +18,36 @@ package com.menohack.glebforge.view
 		[Embed(source = "../../../../../lib/cursor.png")]
 		private var cursorImage:Class;
 		
+		/**
+		 * The cursor sprite.
+		 */
 		private var cursor:Sprite;
 		
+		/**
+		 * The starting point of the selection box.
+		 */
 		private var start:Point;
 		
+		/**
+		 * The selection rectangle.
+		 */
 		private var shape:Shape;
 		
+		/**
+		 * Whether the selection box is being dragged.
+		 */
 		private var drawing:Boolean;
 		
+		/**
+		 * Default constructor. The addEventListener function allows
+		 * the cursor to redraw itself on mouse move.
+		 * @param	addEventListener The stage addEventListener function.
+		 */
 		public function Cursor(addEventListener:Function)
 		{
 			shape = new Shape();
 			shape.visible = false;
-			//sprite.addChild(shape);
+			//addChild(shape);
 			
 			drawing = false;
 			
@@ -38,8 +55,7 @@ package com.menohack.glebforge.view
 			
 			cursor = new Sprite(); 
 			cursor.addChild(new cursorImage());
-			 
-			//stage.addEventListener(MouseEvent.MOUSE_MOVE, redrawCursor);
+			
 			addEventListener(MouseEvent.MOUSE_MOVE, redrawCursor);
 			Mouse.hide();
 		}
@@ -77,10 +93,8 @@ package com.menohack.glebforge.view
 			if (drawing)
 			{
 				clear();
-				//shape.graphics.drawRect(start.x, start.y, 40, 200);
 				shape.graphics.drawRect(start.x, start.y, end.x - start.x, end.y - start.y);
 				shape.visible = true;
-				//trace(end);
 			}
 		}
 		

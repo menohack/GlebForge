@@ -20,17 +20,16 @@ package com.menohack.glebforge.model
 
 		private var peasantDirection:Vector3D = new Vector3D;
 		
-		
 		private var position:Point;
 		
-		private var testSpeed:Number = 300.0;
+		private var testSpeed:Number = 3000.0;
 		
 		public function Player(x:int, y:int)
 		{
 			peasantDirection.x = 0;
 			peasantDirection.y = 0;
 			
-			var render:RenderComponent = new RenderComponent();
+			var render:RenderComponent = new RenderComponent(this);
 			AddComponent(render);
 			var peasant:Bitmap = new peasantImage();
 			render.GetSprite().addChild(peasant);
@@ -40,9 +39,15 @@ package com.menohack.glebforge.model
 			position.y = y;
 			render.Position = new Point(x, y);
 			
+			var select:SelectableComponent = new SelectableComponent(this);
+			AddComponent(select);
+			select.Position = position;
+			
+			/*
 			var randomWalkTimer:Timer = new Timer(1000);
 			randomWalkTimer.addEventListener(TimerEvent.TIMER, changeRandWalkDir)
 			randomWalkTimer.start();
+			*/
 		}
 		
 		public function update(delta:Number):void
