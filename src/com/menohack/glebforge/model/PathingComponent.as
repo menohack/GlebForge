@@ -66,6 +66,9 @@ package com.menohack.glebforge.model
 			if (direction.length > SPEED * delta / 1000.0)
 				direction.normalize(SPEED*delta/1000.0);
 			position = position.add(direction);
+			
+			var select:SelectableComponent = Parent.GetComponent(SelectableComponent) as SelectableComponent;
+			select.Position = position;
 		}
 		
 	}
