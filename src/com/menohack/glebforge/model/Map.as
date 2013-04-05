@@ -16,7 +16,7 @@ package com.menohack.glebforge.model
 		[Embed(source = "../../../../../lib/grasstiles.png")]
 		private var grassTiles:Class;
 		
-		private var tiles:Vector.<BitmapData>;
+		private static var tiles:Vector.<BitmapData>;
 		
 		private var blocks:Vector.<Block>;
 		

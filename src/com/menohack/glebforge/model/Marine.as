@@ -2,6 +2,7 @@ package com.menohack.glebforge.model
 {
 	import com.menohack.glebforge.view.Camera;
 	import com.menohack.glebforge.view.RenderComponent;
+	import com.menohack.glebforge.view.Animation;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.geom.Point;
@@ -13,10 +14,19 @@ package com.menohack.glebforge.model
 	 * ...
 	 * @author James Doverspike
 	 */
-	public class Player extends Entity
+	public class Marine extends Entity
 	{
 		[Embed(source = "../../../../../lib/peasant.png")]
 		private var peasantImage:Class;
+		
+		[Embed(source = "../../../../../lib/MarineUp.png")]
+		private static var marineUp:Class;
+		[Embed(source = "../../../../../lib/MarineRight.png")]
+		private static var marineRight:Class;
+		[Embed(source = "../../../../../lib/MarineDown.png")]
+		private static var marineDown:Class;
+		[Embed(source = "../../../../../lib/MarineLeft.png")]
+		private static var marineLeft:Class;
 
 		private var peasantDirection:Vector3D = new Vector3D;
 		
@@ -24,15 +34,27 @@ package com.menohack.glebforge.model
 		
 		private var testSpeed:Number = 3000.0;
 		
-		public function Player(x:int, y:int)
+		public function Marine(x:int, y:int)
 		{
 			peasantDirection.x = 0;
 			peasantDirection.y = 0;
 			
-			var render:RenderComponent = new RenderComponent(this);
+			//var peasant:Bitmap = new peasantImage();
+			
+			var bitmaps:Vector.<Bitmap> = new Vector.<Bitmap>();
+			bitmaps.push(new marineUp);
+			bitmaps.push(new marineRight);
+			bitmaps.push(new marineDown);
+			bitmaps.push(new marineLeft);
+			var ani:Animation = new Animation(bitmaps, 500);
+			
+			var render:RenderComponent = new RenderComponent(this, ani);
 			AddComponent(render);
-			var peasant:Bitmap = new peasantImage();
-			render.GetSprite().addChild(peasant);
+			
+			//render.GetSprite().addChild(peasant);
+			
+
+
 			
 			position = new Point();
 			position.x = x;

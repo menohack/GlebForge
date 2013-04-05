@@ -39,6 +39,7 @@ package com.menohack.glebforge.view
 				else addEventListener(Event.ADDED_TO_STAGE, init);
 			}
 		}
+		
 		/*
 		private function test(e:Event = null):void
 		{

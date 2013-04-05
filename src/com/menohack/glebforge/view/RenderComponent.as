@@ -29,14 +29,18 @@ package com.menohack.glebforge.view
 		
 		private var shape:Shape;
 		
-		public function RenderComponent(parent:Entity) 
+		public function RenderComponent(parent:Entity, animation:Animation=null) 
 		{
 			super("RenderComponent", parent);
 			
 			this.sprite = new Sprite();
+			if (animation != null)
+				this.sprite.addChild(animation.GetSprite());
+				
 			shape = new Shape();
 			shape.graphics.lineStyle(1, 0x00FF00);
 			selected = false;
+			
 			
 			World.GetInstance().AddRenderComponent(this);
 		}
