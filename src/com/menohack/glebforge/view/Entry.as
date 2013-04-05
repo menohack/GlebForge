@@ -9,7 +9,8 @@ package com.menohack.glebforge.view
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
-	
+		
+	import com.yyztom.test.ui.Demo;
 	
 	/**
 	 * ...
@@ -30,6 +31,9 @@ package com.menohack.glebforge.view
 			
 			if (testing)
 			{
+				
+				var demo:Demo = new Demo(.1);
+				stage.addChild(demo);
 				//if (stage) test();
 				//else addEventListener(Event.ADDED_TO_STAGE, test);
 			}

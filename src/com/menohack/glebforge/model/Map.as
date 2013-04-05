@@ -1,8 +1,10 @@
 package com.menohack.glebforge.model 
 {
 	import com.menohack.glebforge.view.RenderComponent;
+	import com.yyztom.test.ui.SpriteTile;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -25,12 +27,17 @@ package com.menohack.glebforge.model
 		
 		public static var BLOCK_DIM:uint = 32;
 		
+		private var grids:Sprite = new Sprite();
+		
 		public function Map() 
 		{
 			var render:RenderComponent = new RenderComponent(this);
 			AddComponent(render);
 			
 			blocks = new Vector.<Block>();
+			
+			grids.visible = false;
+			render.GetSprite().addChild(grids);
 		}
 		
 		/**
@@ -87,11 +94,39 @@ package com.menohack.glebforge.model
 			
 			var render:RenderComponent = GetComponent(RenderComponent) as RenderComponent;
 			if (render != null)
+			{
+				//Add the block
 				render.GetSprite().addChild(block);
+				
+				render.GetSprite().removeChild(grids);
+				//Add a grid to outline the tiles
+				var grid:Sprite = new Sprite();
+				grid.graphics.lineStyle(1, 0x00FF00);
+				grid.x = block.x;
+				grid.y = block.y;
+				
+				for (var c:int = 0; c < BLOCK_DIM; c++)
+					for (var d:int = 0; d < BLOCK_DIM; d++)
+						grid.graphics.drawRect(c * TILE_WIDTH, d * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT);
+				
+				grid.visible = true;
+				grids.addChild(grid);
+				
+				render.GetSprite().addChild(grids);
+			}
 			
 			return block;
 		}
 		
+		public function ShowGrid():void
+		{
+			grids.visible = true;
+		}
+		
+		public function HideGrid():void
+		{
+			grids.visible = false;
+		}
 		
 	}
 

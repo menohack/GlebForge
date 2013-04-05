@@ -62,7 +62,7 @@ package com.menohack.glebforge.model
 			for (var bx:int = -5; bx < 5; bx++)
 				for (var by:int = -5; by < 5; by++)
 					map.addBlock(bx, by);
-			
+			//map.ShowGrid();
 			
 			//acm main: 128.220.251.35
 			//var ip:String = "128.220.251.35";
